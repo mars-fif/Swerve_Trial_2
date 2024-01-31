@@ -6,7 +6,6 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.util.DriverOI;
-import frc.robot.util.DriverOI.DPadDirection;
 
 public class SwerveDriveCommand extends Command {
   private Drivetrain drivetrain = Drivetrain.getInstance();
@@ -28,20 +27,16 @@ public class SwerveDriveCommand extends Command {
   public void execute() {
     Translation2d position;
 
-    // if (driverOI.getDriverDPadInput() != DPadDirection.NONE) {
-    //   position = driverOI.getCardinalDirection();
-    // } else {
-    //   position = driverOI.getSwerveTranslation();
-    //   SmartDashboard.putNumber("field relative input forward axis", position.getX());
-    //   SmartDashboard.putNumber("field relative input strafe axis", position.getY());
 
-    // }
+    position = driverOI.getSwerveTranslation();
+    SmartDashboard.putNumber("field relative input forward axis", position.getX());
+    SmartDashboard.putNumber("field relative input strafe axis", position.getY());
 
-    // double rotation = -driverOI.getRotation();
+    double rotation = -driverOI.getRotation();
 
-    // Translation2d centerOfRotation = driverOI.getCenterOfRotation();
+    Translation2d centerOfRotation = driverOI.getCenterOfRotation();
 
-    // drivetrain.drive(position, rotation, true, centerOfRotation);
+    drivetrain.drive(position, rotation, true, centerOfRotation);
 
   }
 

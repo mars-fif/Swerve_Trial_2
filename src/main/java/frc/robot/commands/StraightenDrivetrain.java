@@ -26,7 +26,7 @@ public class StraightenDrivetrain extends Command{
 
     @Override
     public boolean isFinished(){
-        //return Timer.getFPGATimestamp()-initialTime > 0.5;
-        return false;
+        return Timer.getFPGATimestamp()-initialTime > 0.5;
+        //return false;
     }
 }
