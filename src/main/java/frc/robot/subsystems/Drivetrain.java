@@ -11,6 +11,7 @@ import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.ADIS16470_IMU;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.Swerve;
@@ -48,21 +49,26 @@ public class Drivetrain extends SubsystemBase{
         
         
 
-        swerveModules = new Mk4TTBSwerve[] {frontLeftSwerveModule, backLeftSwerveModule, backRightSwerveModule, frontRightSwerveModule};
+        swerveModules = new Mk4TTBSwerve[] {frontLeftSwerveModule, frontRightSwerveModule, backLeftSwerveModule, backRightSwerveModule};
 
-        swerveModulePositions = new SwerveModulePosition[] {frontLeftSwerveModule.getPosition(), backLeftSwerveModule.getPosition(), backRightSwerveModule.getPosition(), frontRightSwerveModule.getPosition()};
+        swerveModulePositions = new SwerveModulePosition[] {
+            frontLeftSwerveModule.getPosition(), 
+            frontRightSwerveModule.getPosition(), 
+            backLeftSwerveModule.getPosition(), 
+            backRightSwerveModule.getPosition()};
 
         gyro = new ADIS16470_IMU();
-        isFlipped = false;
+        isFlipped = true;
 
         lastestChassisSpeed = 0.0;
 
         odometry = new SwerveDrivePoseEstimator(DriveConstants.kinematics, getHeadingAsRotation2d(), 
-            new SwerveModulePosition[]{
-                frontLeftSwerveModule.getPosition(), 
+            new SwerveModulePosition[]
+            {
+                frontLeftSwerveModule.getPosition(),
+                frontRightSwerveModule.getPosition(),
                 backLeftSwerveModule.getPosition(),
-                backRightSwerveModule.getPosition(),
-                frontRightSwerveModule.getPosition()}, 
+                backRightSwerveModule.getPosition()}, 
                 new Pose2d(), 
                 VecBuilder.fill(0.1, 0.1, 0.1), 
                 VecBuilder.fill(0.9,0.9,0.9));
@@ -92,7 +98,7 @@ public class Drivetrain extends SubsystemBase{
     }
 
     public void setSwerveModuleSates(SwerveModuleState[] swerveModuleStates){
-        SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates, 12.25); //12.5 per SDS for L1
+        SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates, DriveConstants.kRealMaxSpeedMPS); //12.5 per SDS for L1
     
         for(int i=0; i < swerveModules.length; i++){
             swerveModules[i].setDesiredState(swerveModuleStates[i]);
@@ -107,8 +113,10 @@ public class Drivetrain extends SubsystemBase{
     }
 
     public ChassisSpeeds getRobotChassisSpeeds(){
-        return DriveConstants.kinematics.toChassisSpeeds(frontLeftSwerveModule.getState(), backLeftSwerveModule.getState(),
-                                                        backRightSwerveModule.getState(), frontRightSwerveModule.getState());
+        return DriveConstants.kinematics.toChassisSpeeds(frontLeftSwerveModule.getState(), 
+                                                        frontRightSwerveModule.getState(), 
+                                                        backLeftSwerveModule.getState(),
+                                                        backRightSwerveModule.getState());
     }
 
     private ChassisSpeeds correctHeading(ChassisSpeeds desiredSpeed){
@@ -224,6 +232,8 @@ public class Drivetrain extends SubsystemBase{
             swerveModulePositions[i] = swerveModules[i].getPosition();
         }
 
+        SmartDashboard.putNumber("Gyro Raw Heading", getHeading());
+        
         updateOdometry();
     }
 }

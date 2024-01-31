@@ -42,6 +42,7 @@ public class Mk4TTBSwerve{
 
         m_driveSparkMax = new CANSparkMax(constants.driveMotorID, MotorType.kBrushless);
         m_driveSparkMax.restoreFactoryDefaults();
+        m_driveSparkMax.setInverted(constants.inverted);
         m_driveEncoder = m_driveSparkMax.getEncoder();
         m_drivePIDController = m_driveSparkMax.getPIDController();
         m_drivePIDController.setFeedbackDevice(m_driveEncoder);
@@ -116,7 +117,7 @@ public class Mk4TTBSwerve{
         m_turningPIDController.setPositionPIDWrappingMinInput(0);
         m_turningPIDController.setPositionPIDWrappingMaxInput(2*Math.PI);
         m_turningPIDController.setFeedbackDevice(m_turningEncoder);
-        m_turningPIDController.setP(0.5);
+        m_turningPIDController.setP(0.25);
         m_turningPIDController.setI(0);
         m_turningPIDController.setD(0);
         m_turningPIDController.setFF(0);

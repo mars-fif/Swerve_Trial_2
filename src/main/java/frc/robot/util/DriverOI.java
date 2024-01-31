@@ -4,7 +4,6 @@ import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.util.WPIUtilJNI;
-import edu.wpi.first.wpilibj.PS4Controller;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -58,7 +57,7 @@ public class DriverOI {
     }
 
     public double getForward(){
-        double input = controller.getRawAxis(XboxController.Axis.kLeftY.value);
+        double input = -controller.getRawAxis(XboxController.Axis.kLeftY.value);
 
         if(Math.abs(input) < 0.9){
             return input *=0.7777; // Why 0.7777?
@@ -78,8 +77,8 @@ public class DriverOI {
     }
 
     public double getRotation() {
-        double leftRotation = controller.getRawAxis(PS4Controller.Axis.kL2.value);
-        double rightRotation = controller.getRawAxis(PS4Controller.Axis.kR2.value);
+        double leftRotation = controller.getRawAxis(XboxController.Axis.kLeftTrigger.value);
+        double rightRotation = controller.getRawAxis(XboxController.Axis.kRightTrigger.value);
 
         double combinedRotation;
         if (DriveConstants.kUseRateLimit) {
@@ -92,7 +91,7 @@ public class DriverOI {
     }
 
     public Translation2d getCenterOfRotation() {
-        double rotX = controller.getRawAxis(2) * DriveConstants.kWheelBase;
+        double rotX = controller.getRawAxis(4) * DriveConstants.kWheelBase;
         double rotY = controller.getRawAxis(5) * DriveConstants.kTrackWidth;
 
         if (rotX * rotY > 0) {
