@@ -68,7 +68,8 @@ public class Mk4TTBSwerve{
         correctedDesiredState.speedMetersPerSecond = desiredState.speedMetersPerSecond;
         correctedDesiredState.angle = desiredState.angle.plus(new Rotation2d(m_angleOffset));
 
-        SwerveModuleState optimizedDesiredState = SwerveModuleState.optimize(correctedDesiredState, new Rotation2d(m_turningEncoder.getPosition()));
+        SwerveModuleState optimizedDesiredState = SwerveModuleState.optimize(correctedDesiredState, 
+        new Rotation2d(m_turningEncoder.getPosition()));
 
         m_turningPIDController.setReference(optimizedDesiredState.angle.getRadians(), CANSparkMax.ControlType.kPosition);
         m_drivePIDController.setReference(optimizedDesiredState.speedMetersPerSecond, CANSparkMax.ControlType.kVelocity);

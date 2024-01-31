@@ -57,7 +57,7 @@ public class DriverOI {
     }
 
     public double getForward(){
-        double input = -controller.getRawAxis(XboxController.Axis.kLeftY.value);
+        double input = controller.getRawAxis(XboxController.Axis.kLeftY.value);
 
         if(Math.abs(input) < 0.9){
             return input *=0.7777; // Why 0.7777?
@@ -87,7 +87,7 @@ public class DriverOI {
             combinedRotation = (rightRotation - leftRotation) / 2.0;
         }
 
-        return combinedRotation * 1.0 * DriveConstants.kMaxAngularSpeed;
+        return combinedRotation * 0.25 * DriveConstants.kMaxAngularSpeed;
     }
 
     public Translation2d getCenterOfRotation() {

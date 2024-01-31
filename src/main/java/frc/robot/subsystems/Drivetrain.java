@@ -42,10 +42,11 @@ public class Drivetrain extends SubsystemBase{
 
 
     public Drivetrain(){
-        frontLeftSwerveModule = new Mk4TTBSwerve(0, Swerve.Mod0.constants);
-        backLeftSwerveModule = new Mk4TTBSwerve(1 , Swerve.Mod1.constants);
-        backRightSwerveModule = new Mk4TTBSwerve(2 , Swerve.Mod2.constants);
-        frontRightSwerveModule = new Mk4TTBSwerve(3, Swerve.Mod3.constants);
+        frontLeftSwerveModule = new Mk4TTBSwerve(2, Swerve.Mod2.constants);
+        frontRightSwerveModule = new Mk4TTBSwerve(1, Swerve.Mod1.constants);
+        backLeftSwerveModule = new Mk4TTBSwerve(3 , Swerve.Mod3.constants);
+        backRightSwerveModule = new Mk4TTBSwerve(0 , Swerve.Mod0.constants);
+
         
         
 
@@ -97,7 +98,7 @@ public class Drivetrain extends SubsystemBase{
         useHeadingCorrection = enable;
     }
 
-    public void setSwerveModuleSates(SwerveModuleState[] swerveModuleStates){
+    public void setSwerveModuleStates(SwerveModuleState[] swerveModuleStates){
         SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates, DriveConstants.kRealMaxSpeedMPS); //12.5 per SDS for L1
     
         for(int i=0; i < swerveModules.length; i++){
@@ -185,7 +186,7 @@ public class Drivetrain extends SubsystemBase{
 
         swerveModuleStates = DriveConstants.kinematics.toSwerveModuleStates(robotRelativeSpeeds, centerOfRoation);
 
-        setSwerveModuleSates(swerveModuleStates);
+        setSwerveModuleStates(swerveModuleStates);
     }
 
     public double getHeading(){
