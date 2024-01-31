@@ -92,8 +92,8 @@ public class DriverOI {
     }
 
     public Translation2d getCenterOfRotation() {
-        double rotX = controller.getRawAxis(XboxController.Axis.kRightX.value) * DriveConstants.kWheelBase;
-        double rotY = controller.getRawAxis(XboxController.Axis.kRightY.value) * DriveConstants.kTrackWidth;
+        double rotX = controller.getRawAxis(2) * DriveConstants.kWheelBase;
+        double rotY = controller.getRawAxis(5) * DriveConstants.kTrackWidth;
 
         if (rotX * rotY > 0) {
             rotX = -rotX;

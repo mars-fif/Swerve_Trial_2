@@ -57,6 +57,9 @@ public class Mk4TTBSwerve{
         m_driveSparkMax.setClosedLoopRampRate(0.05);
         m_driveSparkMax.burnFlash();
 
+        
+        m_desiredState.angle = new Rotation2d(m_turningEncoder.getPosition());
+        m_driveEncoder.setPosition(0);
     }
 
     public void setDesiredState(SwerveModuleState desiredState){
