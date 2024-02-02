@@ -32,7 +32,7 @@ public class SwerveDriveCommand extends Command {
     double rotation = driverOI.getRotation();
     Translation2d centerOfRotation = driverOI.getCenterOfRotation();
 
-    drivetrain.drive(position, rotation, true, centerOfRotation);
+    drivetrain.drive(position, rotation, false, centerOfRotation);
 
   }
 

@@ -57,7 +57,7 @@ public class DriverOI {
     }
 
     public double getForward(){
-        double input = controller.getRawAxis(XboxController.Axis.kLeftY.value);
+        double input = -controller.getRawAxis(XboxController.Axis.kLeftY.value);
 
         if(Math.abs(input) < 0.9){
             return input *=0.7777; // Why 0.7777?
@@ -67,7 +67,7 @@ public class DriverOI {
     }
 
         public double getStrafe(){
-        double input = -controller.getRawAxis(XboxController.Axis.kLeftX.value);
+        double input = controller.getRawAxis(XboxController.Axis.kLeftX.value);
 
         if(Math.abs(input) < 0.9){
             return input *=0.7777; // Why 0.7777?
@@ -87,11 +87,11 @@ public class DriverOI {
             combinedRotation = (rightRotation - leftRotation) / 2.0;
         }
 
-        return combinedRotation * 0.4 * DriveConstants.kMaxAngularSpeed;
+        return combinedRotation * 1.0 * DriveConstants.kMaxAngularSpeed;
     }
 
     public Translation2d getCenterOfRotation() {
-        double rotX = controller.getRawAxis(4) * DriveConstants.kWheelBase;
+        double rotX = -controller.getRawAxis(4) * DriveConstants.kWheelBase;
         double rotY = controller.getRawAxis(5) * DriveConstants.kTrackWidth;
 
         if (rotX * rotY > 0) {
@@ -246,17 +246,17 @@ public class DriverOI {
         Translation2d next_translation = new Translation2d(xSpeedCommanded, ySpeedCommanded);
 
         double norm = next_translation.getNorm();
-        if(norm < 0.1){
+        if(norm < 0.15){
             return new Translation2d();
         }else{
             Rotation2d deadband_direction = new Rotation2d(next_translation.getX(), next_translation.getY());
-            Translation2d deadband_vector = fromPolar(deadband_direction, 0.1);
+            Translation2d deadband_vector = fromPolar(deadband_direction, 0.15);
 
             double new_translation_x = next_translation.getX() - (deadband_vector.getX()) / (1 - deadband_vector.getX());
             double new_translation_y = next_translation.getY() - (deadband_vector.getY()) / (1 - deadband_vector.getY());
 
-            next_translation = new Translation2d(new_translation_x * 0.25 * DriveConstants.kRealMaxSpeedMPS,
-                                                 new_translation_y * 0.25 * DriveConstants.kRealMaxSpeedMPS);
+            next_translation = new Translation2d(new_translation_x * 1.0 * DriveConstants.kRealMaxSpeedMPS,
+                                                 new_translation_y * 1.0 * DriveConstants.kRealMaxSpeedMPS);
                                              
             return next_translation;
         }

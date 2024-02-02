@@ -47,16 +47,19 @@ public class Drivetrain extends SubsystemBase{
         backLeftSwerveModule = new Mk4TTBSwerve(1, Swerve.Mod1.constants);
         backRightSwerveModule = new Mk4TTBSwerve(2 , Swerve.Mod2.constants);
 
-        
-        
-
         swerveModules = new Mk4TTBSwerve[] {
+            backLeftSwerveModule,
+            backRightSwerveModule,
             frontLeftSwerveModule,
-            frontRightSwerveModule};
+            frontRightSwerveModule
+            };
 
         swerveModulePositions = new SwerveModulePosition[] {
+            backLeftSwerveModule.getPosition(),
+            backRightSwerveModule.getPosition(),
             frontLeftSwerveModule.getPosition(),
-            frontRightSwerveModule.getPosition()};
+            frontRightSwerveModule.getPosition(),
+            };
 
         gyro = new ADIS16470_IMU();
         isFlipped = false;
@@ -68,8 +71,11 @@ public class Drivetrain extends SubsystemBase{
         getHeadingAsRotation2d(), 
             new SwerveModulePosition[]
             {
+                backLeftSwerveModule.getPosition(),
+                backRightSwerveModule.getPosition(),
                 frontLeftSwerveModule.getPosition(),
-                frontRightSwerveModule.getPosition()}, 
+                frontRightSwerveModule.getPosition(),
+                }, 
                 new Pose2d(), 
                 VecBuilder.fill(0.1, 0.1, 0.1), 
                 VecBuilder.fill(0.9,0.9,0.9));
@@ -115,8 +121,11 @@ public class Drivetrain extends SubsystemBase{
 
     public ChassisSpeeds getRobotChassisSpeeds(){
         return DriveConstants.kinematics.toChassisSpeeds(
+        backLeftSwerveModule.getState(),
+            backRightSwerveModule.getState(),    
             frontLeftSwerveModule.getState(),
-            frontRightSwerveModule.getState());
+            frontRightSwerveModule.getState()
+            );
     }
 
     private ChassisSpeeds correctHeading(ChassisSpeeds desiredSpeed){
@@ -189,7 +198,7 @@ public class Drivetrain extends SubsystemBase{
     }
 
     public double getHeading(){
-        heading = gyro.getAngle(gyro.getYawAxis());
+        heading = -gyro.getAngle(gyro.getYawAxis());
         return Math.IEEEremainder(heading, 360);
     }
 
@@ -228,11 +237,13 @@ public class Drivetrain extends SubsystemBase{
             module.putSmartDashboard();
         }
 
-        for(int i = 0; i < 2; i++){
+        for(int i = 0; i < swerveModules.length; i++){
             swerveModulePositions[i] = swerveModules[i].getPosition();
         }
 
-        SmartDashboard.putNumber("Gyro Raw Heading", getHeading());
+        SmartDashboard.putNumber("Gyro Heading", getHeading());
+        SmartDashboard.putNumber("Gyro Pitch", gyro.getAngle(gyro.getPitchAxis()));
+        SmartDashboard.putNumber("Gyro Roll", gyro.getAngle(gyro.getRollAxis()));
         
         updateOdometry();
     }

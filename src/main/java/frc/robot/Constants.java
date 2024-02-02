@@ -52,13 +52,17 @@ public final class Constants {
                     / kDrivingMotorReduction) / 60.0; // meters per second
 
     public static final Translation2d[] swerveModuleLocations = {
-      new Translation2d(kWheelBase / 2.0, kTrackWidth / 2.0),
-      new Translation2d(-kWheelBase / 2.0, kTrackWidth/2.0)
+      new Translation2d(kWheelBase / 2.0, kTrackWidth / 2.0), // FL
+      new Translation2d(kWheelBase / 2.0, -kTrackWidth/2.0), // FR
+      new Translation2d(-kWheelBase / 2.0, kTrackWidth / 2.0), // BL
+      new Translation2d(-kWheelBase / 2.0, -kTrackWidth / 2.0) // BR
     };
 
     public static final SwerveDriveKinematics kinematics = new SwerveDriveKinematics(
       swerveModuleLocations[0],
-      swerveModuleLocations[1]);
+      swerveModuleLocations[1],
+      swerveModuleLocations[2],
+      swerveModuleLocations[3]);
 
 
       public static final boolean kUseRateLimit = true;
@@ -67,7 +71,7 @@ public final class Constants {
       public static final double kRotationalSlewRate = 2.0;
 
 
-      public static final double kHeadingCorrectionP = 0.05;
+      public static final double kHeadingCorrectionP = 0.04;
       public static final double kHeadingCorrectionTolerance = 2.0;
   }
 
@@ -77,7 +81,7 @@ public final class Constants {
       //Left Front
       public static final int TURNING_SPARK_ID = 11;
       public static final int DRIVING_SPARK_ID = 12;
-      public static final Rotation2d angleOffset = new Rotation2d(5.83-(Math.PI)); //2.63
+      public static final Rotation2d angleOffset = new Rotation2d(2.62); //2.63
       public static final boolean inverted = false;
 
       public static final SwerveModuleConstants constants = new SwerveModuleConstants(DRIVING_SPARK_ID, TURNING_SPARK_ID,
@@ -88,7 +92,7 @@ public final class Constants {
       //Left Rear
       public static final int TURNING_SPARK_ID = 21;
       public static final int DRIVING_SPARK_ID = 22;
-      public static final Rotation2d angleOffset = new Rotation2d(2.81+(3*Math.PI/2)); //1.05
+      public static final Rotation2d angleOffset = new Rotation2d(6.04); //1.05
       public static final boolean inverted = false;
 
       public static final SwerveModuleConstants constants = new SwerveModuleConstants(DRIVING_SPARK_ID, TURNING_SPARK_ID,
@@ -99,7 +103,7 @@ public final class Constants {
       //Right Rear
       public static final int TURNING_SPARK_ID = 32;
       public static final int DRIVING_SPARK_ID = 31;
-      public static final Rotation2d angleOffset = new Rotation2d(0.80+(3*Math.PI/2));
+      public static final Rotation2d angleOffset = new Rotation2d(0.88);
       public static final boolean inverted = false;
 
       public static final SwerveModuleConstants constants = new SwerveModuleConstants(DRIVING_SPARK_ID, TURNING_SPARK_ID,
@@ -107,9 +111,10 @@ public final class Constants {
   }
 
     public static final class Mod3{
+      // Front Right
       public static final int TURNING_SPARK_ID = 41;
       public static final int DRIVING_SPARK_ID = 42;
-      public static final Rotation2d angleOffset = new Rotation2d(0.08);
+      public static final Rotation2d angleOffset = new Rotation2d(6.26);
       public static final boolean inverted = false;
 
       public static final SwerveModuleConstants constants = new SwerveModuleConstants(DRIVING_SPARK_ID, TURNING_SPARK_ID,

@@ -111,14 +111,15 @@ public class Mk4TTBSwerve{
         m_turningSparkMax.restoreFactoryDefaults();
         m_turningSparkMax.setIdleMode(IdleMode.kBrake);
         m_turningSparkMax.setSmartCurrentLimit(40);
-        m_turningEncoder.setInverted(true);
+        m_turningSparkMax.setInverted(false);
+        m_turningEncoder.setInverted(true); // ALWAYS BE TRUEEEEEEEE
         m_turningEncoder.setPositionConversionFactor((2*Math.PI)/3.3);
         m_turningEncoder.setVelocityConversionFactor(((2*Math.PI)/3.3)/60);
         m_turningPIDController.setPositionPIDWrappingEnabled(true);
         m_turningPIDController.setPositionPIDWrappingMinInput(0);
         m_turningPIDController.setPositionPIDWrappingMaxInput(2*Math.PI);
         m_turningPIDController.setFeedbackDevice(m_turningEncoder);
-        m_turningPIDController.setP(0.5);
+        m_turningPIDController.setP(0.3);
         m_turningPIDController.setI(0);
         m_turningPIDController.setD(0);
         m_turningPIDController.setFF(0);
