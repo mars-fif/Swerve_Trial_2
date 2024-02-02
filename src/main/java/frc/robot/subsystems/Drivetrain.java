@@ -42,34 +42,34 @@ public class Drivetrain extends SubsystemBase{
 
 
     public Drivetrain(){
-        frontLeftSwerveModule = new Mk4TTBSwerve(2, Swerve.Mod2.constants);
-        frontRightSwerveModule = new Mk4TTBSwerve(1, Swerve.Mod1.constants);
-        backLeftSwerveModule = new Mk4TTBSwerve(3 , Swerve.Mod3.constants);
-        backRightSwerveModule = new Mk4TTBSwerve(0 , Swerve.Mod0.constants);
+        frontLeftSwerveModule = new Mk4TTBSwerve(0, Swerve.Mod0.constants);
+        frontRightSwerveModule = new Mk4TTBSwerve(3, Swerve.Mod3.constants);
+        backLeftSwerveModule = new Mk4TTBSwerve(1, Swerve.Mod1.constants);
+        backRightSwerveModule = new Mk4TTBSwerve(2 , Swerve.Mod2.constants);
 
         
         
 
-        swerveModules = new Mk4TTBSwerve[] {frontLeftSwerveModule, frontRightSwerveModule, backLeftSwerveModule, backRightSwerveModule};
+        swerveModules = new Mk4TTBSwerve[] {
+            frontLeftSwerveModule,
+            frontRightSwerveModule};
 
         swerveModulePositions = new SwerveModulePosition[] {
-            frontLeftSwerveModule.getPosition(), 
-            frontRightSwerveModule.getPosition(), 
-            backLeftSwerveModule.getPosition(), 
-            backRightSwerveModule.getPosition()};
+            frontLeftSwerveModule.getPosition(),
+            frontRightSwerveModule.getPosition()};
 
         gyro = new ADIS16470_IMU();
-        isFlipped = true;
+        isFlipped = false;
 
         lastestChassisSpeed = 0.0;
 
-        odometry = new SwerveDrivePoseEstimator(DriveConstants.kinematics, getHeadingAsRotation2d(), 
+        odometry = new SwerveDrivePoseEstimator(
+        DriveConstants.kinematics, 
+        getHeadingAsRotation2d(), 
             new SwerveModulePosition[]
             {
                 frontLeftSwerveModule.getPosition(),
-                frontRightSwerveModule.getPosition(),
-                backLeftSwerveModule.getPosition(),
-                backRightSwerveModule.getPosition()}, 
+                frontRightSwerveModule.getPosition()}, 
                 new Pose2d(), 
                 VecBuilder.fill(0.1, 0.1, 0.1), 
                 VecBuilder.fill(0.9,0.9,0.9));
@@ -114,10 +114,9 @@ public class Drivetrain extends SubsystemBase{
     }
 
     public ChassisSpeeds getRobotChassisSpeeds(){
-        return DriveConstants.kinematics.toChassisSpeeds(frontLeftSwerveModule.getState(), 
-                                                        frontRightSwerveModule.getState(), 
-                                                        backLeftSwerveModule.getState(),
-                                                        backRightSwerveModule.getState());
+        return DriveConstants.kinematics.toChassisSpeeds(
+            frontLeftSwerveModule.getState(),
+            frontRightSwerveModule.getState());
     }
 
     private ChassisSpeeds correctHeading(ChassisSpeeds desiredSpeed){
@@ -161,8 +160,8 @@ public class Drivetrain extends SubsystemBase{
 
     public void straighten(){
         frontLeftSwerveModule.setDesiredState(new SwerveModuleState(0.0, new Rotation2d(0.0)));
-        backLeftSwerveModule.setDesiredState(new SwerveModuleState(0, new Rotation2d(0.0)));
-        backRightSwerveModule.setDesiredState(new SwerveModuleState(0, new Rotation2d(0.0)));
+        backLeftSwerveModule.setDesiredState(new SwerveModuleState(0.0, new Rotation2d(0.0)));
+        backRightSwerveModule.setDesiredState(new SwerveModuleState(0.0, new Rotation2d(0.0)));
         frontRightSwerveModule.setDesiredState(new SwerveModuleState(0.0, new Rotation2d(0.0)));
     }
 
@@ -229,7 +228,7 @@ public class Drivetrain extends SubsystemBase{
             module.putSmartDashboard();
         }
 
-        for(int i = 0; i < 4; i++){
+        for(int i = 0; i < 2; i++){
             swerveModulePositions[i] = swerveModules[i].getPosition();
         }
 

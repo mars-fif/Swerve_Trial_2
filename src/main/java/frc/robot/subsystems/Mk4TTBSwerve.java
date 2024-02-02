@@ -118,7 +118,7 @@ public class Mk4TTBSwerve{
         m_turningPIDController.setPositionPIDWrappingMinInput(0);
         m_turningPIDController.setPositionPIDWrappingMaxInput(2*Math.PI);
         m_turningPIDController.setFeedbackDevice(m_turningEncoder);
-        m_turningPIDController.setP(0.25);
+        m_turningPIDController.setP(0.5);
         m_turningPIDController.setI(0);
         m_turningPIDController.setD(0);
         m_turningPIDController.setFF(0);
@@ -132,8 +132,7 @@ public class Mk4TTBSwerve{
         SmartDashboard.putNumber(this.moduleNum + " Actual Angle", m_turningEncoder.getPosition());
         SmartDashboard.putNumber(this.moduleNum + " Mod. Offset", m_angleOffset);
         SmartDashboard.putNumber(this.moduleNum + " M Angle", m_turningEncoder.getPosition()-m_angleOffset);
-        SmartDashboard.putNumber(this.moduleNum + " Set Point", m_desiredState.angle.getRadians());
-
+        SmartDashboard.putNumber(this.moduleNum + " Set Point", m_desiredState.angle.getDegrees());
         SmartDashboard.putNumber(this.moduleNum + " Speed Setpoint", m_desiredState.speedMetersPerSecond);
     }
 }

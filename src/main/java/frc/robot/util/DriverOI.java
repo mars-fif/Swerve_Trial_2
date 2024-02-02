@@ -40,12 +40,12 @@ public class DriverOI {
 
     public void configureController(){
         Trigger xTrigger = new JoystickButton(controller, XboxController.Button.kX.value);
-        xTrigger.onTrue(new SequentialCommandGroup(new StraightenDrivetrain()));
+        xTrigger.whileTrue(new SequentialCommandGroup(new StraightenDrivetrain()));
 
         //Trigger aTrigger = new JoystickButton(controller, XboxController.Button.kA.value);
 
         Trigger bTrigger = new JoystickButton(controller, XboxController.Button.kB.value);
-        bTrigger.onTrue(new SequentialCommandGroup(new StopTest()));
+        bTrigger.whileTrue(new SequentialCommandGroup(new StopTest()));
     }
 
     public static DriverOI getInstance(){
@@ -67,7 +67,7 @@ public class DriverOI {
     }
 
         public double getStrafe(){
-        double input = controller.getRawAxis(XboxController.Axis.kLeftX.value);
+        double input = -controller.getRawAxis(XboxController.Axis.kLeftX.value);
 
         if(Math.abs(input) < 0.9){
             return input *=0.7777; // Why 0.7777?
@@ -87,7 +87,7 @@ public class DriverOI {
             combinedRotation = (rightRotation - leftRotation) / 2.0;
         }
 
-        return combinedRotation * 0.25 * DriveConstants.kMaxAngularSpeed;
+        return combinedRotation * 0.4 * DriveConstants.kMaxAngularSpeed;
     }
 
     public Translation2d getCenterOfRotation() {
@@ -256,7 +256,7 @@ public class DriverOI {
             double new_translation_y = next_translation.getY() - (deadband_vector.getY()) / (1 - deadband_vector.getY());
 
             next_translation = new Translation2d(new_translation_x * 0.25 * DriveConstants.kRealMaxSpeedMPS,
-                                             new_translation_y * 0.25 * DriveConstants.kRealMaxSpeedMPS);
+                                                 new_translation_y * 0.25 * DriveConstants.kRealMaxSpeedMPS);
                                              
             return next_translation;
         }
