@@ -119,7 +119,7 @@ public class Mk4TTBSwerve{
         m_turningPIDController.setPositionPIDWrappingMinInput(0);
         m_turningPIDController.setPositionPIDWrappingMaxInput(2*Math.PI);
         m_turningPIDController.setFeedbackDevice(m_turningEncoder);
-        m_turningPIDController.setP(0.3);
+        m_turningPIDController.setP(0.45);
         m_turningPIDController.setI(0);
         m_turningPIDController.setD(0);
         m_turningPIDController.setFF(0);
