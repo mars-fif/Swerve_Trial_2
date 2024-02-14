@@ -16,6 +16,14 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.Swerve;
 
+import java.util.concurrent.locks.ReentrantReadWriteLock;
+
+import javax.swing.Renderer;
+
+import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
+import com.pathplanner.lib.util.PIDConstants;
+import com.pathplanner.lib.util.ReplanningConfig;
+
 public class Drivetrain extends SubsystemBase{
     private static Drivetrain drivetrain;
 
@@ -86,6 +94,9 @@ public class Drivetrain extends SubsystemBase{
         correctHeadingPreviousTime = 0.0;
         correctHeadingOffTime = 0.0;
         correctHeadingTargetHeading = getHeadingAsRotation2d();
+        
+
+        
     }
 
     public static Drivetrain getInstance(){
@@ -121,7 +132,7 @@ public class Drivetrain extends SubsystemBase{
 
     public ChassisSpeeds getRobotChassisSpeeds(){
         return DriveConstants.kinematics.toChassisSpeeds(
-        backLeftSwerveModule.getState(),
+            backLeftSwerveModule.getState(),
             backRightSwerveModule.getState(),    
             frontLeftSwerveModule.getState(),
             frontRightSwerveModule.getState()
@@ -197,6 +208,25 @@ public class Drivetrain extends SubsystemBase{
         setSwerveModuleStates(swerveModuleStates);
     }
 
+
+    public void autoDrive(ChassisSpeeds chassiSpeed){
+        //Translation2d womp = new Translation2d(chassiSpeed.vxMetersPerSecond, chassiSpeed.vyMetersPerSecond);
+        //double womp2 = chassiSpeed.omegaRadiansPerSecond; 
+
+        Translation2d womp = new Translation2d(1, 1);
+        double womp2 = 0;
+        boolean womp3 = true;
+        Translation2d womp4 = new Translation2d(0, 0);
+        //fight me
+        drive(womp, womp2, womp3, womp4);
+        
+
+
+
+    }
+
+
+
     public double getHeading(){
         heading = -gyro.getAngle(gyro.getYawAxis());
         return Math.IEEEremainder(heading, 360);
@@ -215,6 +245,10 @@ public class Drivetrain extends SubsystemBase{
         return odometry.getEstimatedPosition();
     }
 
+    public void resetPose(Pose2d pose){
+        odometry.resetPosition(getHeadingAsRotation2d(), swerveModulePositions, pose);
+    }
+
     public void updateOdometry(){
         odometry.updateWithTime(Timer.getFPGATimestamp(), getHeadingAsRotation2d(), swerveModulePositions);
     }
@@ -230,6 +264,7 @@ public class Drivetrain extends SubsystemBase{
     public boolean getFlipped(){
         return isFlipped;
     }
+
 
     @Override
     public void periodic(){
