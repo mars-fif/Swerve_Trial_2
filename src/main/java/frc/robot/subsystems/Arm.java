@@ -25,7 +25,8 @@ public class Arm extends SubsystemBase{
     private final DutyCycleEncoder leftEncoder;
     private final DutyCycleEncoder rightEncoder;
 
-    private final PIDController armPosPID = new PIDController(ArmConstants.armPosP, ArmConstants.armPosI, ArmConstants.armPosD);
+    //private final PIDController armPosPID = new PIDController(ArmConstants.armPosPLow, ArmConstants.armPosI, ArmConstants.armPosD);
+    private final PIDController armPosPID;
     //private final PIDController armVelocityPID = new PIDController(ArmConstants.armVP, ArmConstants.armVI, ArmConstants.armVD);
 
     public Arm(){
@@ -33,18 +34,21 @@ public class Arm extends SubsystemBase{
         m_rightMotor = new CANSparkMax(ArmConstants.arm_rightMotorID, MotorType.kBrushless);
 
         //right: 1, left: 0
-        leftEncoder = new DutyCycleEncoder(ArmConstants.leftEncoderDIO);
+        leftEncoder = new DutyCycleEncoder(ArmConstants.leftEncoderDIO); //Left encoder is being used as a fallback
         rightEncoder = new DutyCycleEncoder(ArmConstants.rightEncoderDIO);
+        armPosPID = new PIDController(0.0, ArmConstants.armPosI, 0.0);
 
         config();
     }
 
     @Override
     public void periodic(){
+        
         SmartDashboard.putNumber("Left Arm Encoder Value", getEncoderAbsPos(leftEncoder));
         SmartDashboard.putNumber("Right Arm Encoder Value", getEncoderAbsPos(rightEncoder));
 
         SmartDashboard.putNumber("Get Right Encoder Angle", getEncoderAngle());
+        SmartDashboard.putNumber("ArmPID P Value", armPosPID.getP());
     }
 
     public static Arm getInstance(){
@@ -100,7 +104,12 @@ public class Arm extends SubsystemBase{
     }
 
     public void setArmToPos(double setpoint){
-        //Setpoint is set in degrees -> between 0 to 90
+        if (getEncoderAngle() < setpoint){
+            armPosPID.setP(ArmConstants.armPosPHigh);
+            armPosPID.setD(ArmConstants.armPosD);
+        }else if (getEncoderAngle() > setpoint){
+            armPosPID.setP(ArmConstants.armPosPLow);
+        }
         setSpeed(MathUtil.clamp(armPosPID.calculate(getEncoderAngle(),setpoint), -0.15, 0.25));
     }
 

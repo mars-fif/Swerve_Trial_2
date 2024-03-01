@@ -73,10 +73,12 @@ public final class Constants {
 
     public static final int kArmCurrentLimit = 80; 
 
-    //Set P value - down, higher p, up lower p 
-    public static final double armPosP = 0.05;
+    //When the arm is going up, it should be using a lower P value, when it's going down it should use a high p value
+    public static final double armPosPHigh = 0.05;
+    public static final double armPosPLow = 0.005; 
     public static final double armPosI = 0.0; 
-    public static final double armPosD = 0.002; 
+    public static final double armPosD = 0.0;
+    // D: 0.0002 
 
     //Velocity PID
     public static final double armVP = 0.05; 
