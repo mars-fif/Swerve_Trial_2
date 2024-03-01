@@ -10,19 +10,16 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.ADIS16470_IMU;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.Swerve;
-
-import java.util.concurrent.locks.ReentrantReadWriteLock;
-
-import javax.swing.Renderer;
-
+import com.pathplanner.lib.commands.PathPlannerAuto;
 import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
-import com.pathplanner.lib.util.PIDConstants;
 import com.pathplanner.lib.util.ReplanningConfig;
+import com.pathplanner.lib.auto.AutoBuilder;
 
 public class Drivetrain extends SubsystemBase{
     private static Drivetrain drivetrain;
@@ -46,8 +43,7 @@ public class Drivetrain extends SubsystemBase{
     private double correctHeadingOffTime;
 
     private final SwerveDrivePoseEstimator odometry;
-
-
+ 
 
     public Drivetrain(){
         frontLeftSwerveModule = new Mk4TTBSwerve(0, Swerve.Mod0.constants);
@@ -94,10 +90,8 @@ public class Drivetrain extends SubsystemBase{
         correctHeadingPreviousTime = 0.0;
         correctHeadingOffTime = 0.0;
         correctHeadingTargetHeading = getHeadingAsRotation2d();
-        
+        }
 
-        
-    }
 
     public static Drivetrain getInstance(){
         if(drivetrain == null){
@@ -208,24 +202,20 @@ public class Drivetrain extends SubsystemBase{
         setSwerveModuleStates(swerveModuleStates);
     }
 
+    // public void autoDrive(ChassisSpeeds robotRelativeSpeeds) {
+    //     Translation2d translation = new Translation2d(robotRelativeSpeeds.vxMetersPerSecond, robotRelativeSpeeds.vyMetersPerSecond);
+    //     double rotation = robotRelativeSpeeds.omegaRadiansPerSecond;
+    //     boolean fieldOriented = false; 
+    //     Translation2d centerOfRotation = new Translation2d(0,0);
 
-    public void autoDrive(ChassisSpeeds chassiSpeed){
-        //Translation2d womp = new Translation2d(chassiSpeed.vxMetersPerSecond, chassiSpeed.vyMetersPerSecond);
-        //double womp2 = chassiSpeed.omegaRadiansPerSecond; 
+    //     drive(translation, rotation, fieldOriented, centerOfRotation);
+    // }
 
-        Translation2d womp = new Translation2d(1, 1);
-        double womp2 = 0;
-        boolean womp3 = true;
-        Translation2d womp4 = new Translation2d(0, 0);
-        //fight me
-        drive(womp, womp2, womp3, womp4);
-        
-
-
-
+    public void autoDrive(ChassisSpeeds robotRelativeSpeeds) {
+        robotRelativeSpeeds = correctHeading(robotRelativeSpeeds);
+        swerveModuleStates = DriveConstants.kinematics.toSwerveModuleStates(robotRelativeSpeeds);
+        setSwerveModuleStates(swerveModuleStates);
     }
-
-
 
     public double getHeading(){
         heading = -gyro.getAngle(gyro.getYawAxis());
@@ -237,16 +227,18 @@ public class Drivetrain extends SubsystemBase{
     }
 
     public void resetGyro(){
-        gyro.reset();
+        gyro.reset();   
         isFlipped = true;
+    }
+
+    public void resetPose(Pose2d pose){
+        resetGyro();
+        //Pose2d womp = new Pose2d(new Translation2d(2,7), new Rotation2d(0));
+        odometry.resetPosition(getHeadingAsRotation2d(),swerveModulePositions, pose);
     }
 
     public Pose2d getPose(){
         return odometry.getEstimatedPosition();
-    }
-
-    public void resetPose(Pose2d pose){
-        odometry.resetPosition(getHeadingAsRotation2d(), swerveModulePositions, pose);
     }
 
     public void updateOdometry(){
@@ -265,6 +257,8 @@ public class Drivetrain extends SubsystemBase{
         return isFlipped;
     }
 
+    
+    
 
     @Override
     public void periodic(){
@@ -279,6 +273,9 @@ public class Drivetrain extends SubsystemBase{
         SmartDashboard.putNumber("Gyro Heading", getHeading());
         SmartDashboard.putNumber("Gyro Pitch", gyro.getAngle(gyro.getPitchAxis()));
         SmartDashboard.putNumber("Gyro Roll", gyro.getAngle(gyro.getRollAxis()));
+
+        //SmartDashboard.putString("Robot Location", getPose().getTranslation().toString());
+        SmartDashboard.putNumber("Robot Location", getPose().getX());
         
         updateOdometry();
     }

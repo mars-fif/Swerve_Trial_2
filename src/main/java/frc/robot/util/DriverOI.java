@@ -5,18 +5,22 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.util.WPIUtilJNI;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.commands.StopTest;
 import frc.robot.commands.StraightenDrivetrain;
-//import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.Intake;
 
 public class DriverOI {
     public static DriverOI instance;
 
     //private final Drivetrain drivetrain;
+    private final Intake intake; 
+
     private double m_currentRotation = 0.0;
     private double m_currentTranslationDir = 0.0;
     private double m_currentTranslationMag = 0.0;
@@ -27,13 +31,13 @@ public class DriverOI {
 
     private final XboxController controller = new XboxController(0);
 
-
     public enum DPadDirection{
         NONE, FORWARDS, LEFT, RIGHT, BACKWARDS
     };
 
     public DriverOI(){
         //drivetrain = Drivetrain.getInstance();
+        intake = Intake.getInstance();
 
         configureController();
     }
@@ -46,6 +50,17 @@ public class DriverOI {
 
         Trigger bTrigger = new JoystickButton(controller, XboxController.Button.kB.value);
         bTrigger.whileTrue(new SequentialCommandGroup(new StopTest()));
+
+
+        Trigger leftTrigger = new JoystickButton(controller, XboxController.Button.kLeftBumper.value);
+        leftTrigger.onTrue(new InstantCommand(()->intake.setSpeed(.5)))
+        .onFalse(new InstantCommand(()->intake.setSpeed(0)));
+
+        Trigger rightTrigger = new JoystickButton(controller, XboxController.Button.kRightBumper.value);
+        rightTrigger.onTrue(new InstantCommand(()->intake.setSpeed(-.5)))
+        .onFalse(new InstantCommand(()->intake.setSpeed(0)));
+
+        
     }
 
     public static DriverOI getInstance(){

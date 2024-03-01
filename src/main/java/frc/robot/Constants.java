@@ -7,6 +7,7 @@ package frc.robot;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
+import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
 import frc.robot.util.SwerveModuleConstants;
 /**
@@ -24,6 +25,81 @@ public final class Constants {
 
   public static class NeoMotorConstants{
     public static final double kFreeSpeedRpm = 5676;
+  }
+
+  public static class IntakeConstants{
+    //Change these later! 
+    public static final int intake_leftMotorID = 52; 
+    public static final int intake_rightMotorID = 51; 
+    
+    //regular NEOs are 80
+    public static final int kIntakeCurrentLimit = 20;
+
+  }
+
+  public static class ShooterConstants{
+    //Change these later! 
+    public static final int shooter_leftMotorID = 54; 
+    public static final int shooter_rightMotorID = 53; 
+    
+    public static final int kShootCurrentLimit = 80;
+
+  }
+
+  public static class ArmConstants{
+    //right: 55
+    //left: 56 
+    public static final int arm_leftMotorID = 56; 
+    public static final int arm_rightMotorID = 55; 
+
+    //Change these to actual values later 
+    public static final int topLimitSwitchChannel = 0; 
+    public static final int bottomLimitSwitchChannel = 1; 
+
+    public static final int leftEncoderDIO = 0; 
+    public static final int rightEncoderDIO = 1;
+
+    //CHANGE THESE LATER! 
+    //Encoder values
+    //When the arm is positioned at a 90 degree angle (max), the values outputed by absolute encoders
+    public static final double leftEncPos = 0.4582; 
+    public static final double leftEncoderOffset = 0.7017; //Encoder values when the arm is in its home position
+    public static final double leftActualMaxPos = leftEncoderOffset - leftEncPos; 
+    public static final double rightEncPos = 0.4751; 
+    public static final double rightEncoderOffset = 0.2293; //Encoder values when the arm is in its home position
+    public static final double rightActualMaxPos = rightEncPos - rightEncoderOffset;
+    public static final double leftEncMaxDegrees = (leftActualMaxPos*360);
+    public static final double rightEncMaxDegrees = (rightActualMaxPos*360); 
+
+    public static final int kArmCurrentLimit = 80; 
+
+    //Set P value - down, higher p, up lower p 
+    public static final double armPosP = 0.05;
+    public static final double armPosI = 0.0; 
+    public static final double armPosD = 0.002; 
+
+    //Velocity PID
+    public static final double armVP = 0.05; 
+    public static final double armVI = 0.0; 
+    public static final double armVD = 0.0; 
+  }
+
+
+  public static class AutoConstants{
+    public static final double kMaxSpeedMetersPerSec = DriveConstants.kRealMaxSpeedMPS/8; 
+    public static final double kMaxAcceleration = .3;
+    
+    public static final double xControllerP = 0.000005;
+    public static final double yControllerP = 0.000005;
+    public static final double thetaControllerP = 0.005;
+
+    //sorry lol these naming schemes succcc
+    //Adjust values later
+
+    public static final double kmaxAngularSpeedRadiansPerSec = DriveConstants.kMaxAngularSpeed / 10; 
+    public static final double kMaxAngularAccelerationRadiansPerSecondSquared = Math.PI / 4; 
+    public static final TrapezoidProfile.Constraints thetaControllerConstraints = new TrapezoidProfile.Constraints(kmaxAngularSpeedRadiansPerSec, kMaxAngularAccelerationRadiansPerSecondSquared);
+
   }
 
   public static class DriveConstants{
