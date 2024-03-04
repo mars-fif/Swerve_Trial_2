@@ -207,8 +207,13 @@ public class Drivetrain extends SubsystemBase{
     }
 
     public void resetGyro(){
+<<<<<<< Updated upstream
         gyro.reset();
         isFlipped = true;
+=======
+        gyro.reset();   
+        //isFlipped = true;
+>>>>>>> Stashed changes
     }
 
     public Pose2d getPose(){

@@ -11,12 +11,26 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.commands.StopTest;
 import frc.robot.commands.StraightenDrivetrain;
+<<<<<<< Updated upstream
 //import frc.robot.subsystems.Drivetrain;
+=======
+import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.SmolArm;
+>>>>>>> Stashed changes
 
 public class DriverOI {
     public static DriverOI instance;
 
+<<<<<<< Updated upstream
     //private final Drivetrain drivetrain;
+=======
+    private final Drivetrain drivetrain;
+    private final Intake intake; 
+
+    private final SmolArm smolArm;
+
+>>>>>>> Stashed changes
     private double m_currentRotation = 0.0;
     private double m_currentTranslationDir = 0.0;
     private double m_currentTranslationMag = 0.0;
@@ -33,7 +47,13 @@ public class DriverOI {
     };
 
     public DriverOI(){
+<<<<<<< Updated upstream
         //drivetrain = Drivetrain.getInstance();
+=======
+        drivetrain = Drivetrain.getInstance();
+        intake = Intake.getInstance();
+        smolArm = SmolArm.getInstance();
+>>>>>>> Stashed changes
 
         configureController();
     }
@@ -42,10 +62,35 @@ public class DriverOI {
         Trigger xTrigger = new JoystickButton(controller, XboxController.Button.kX.value);
         xTrigger.whileTrue(new SequentialCommandGroup(new StraightenDrivetrain()));
 
-        //Trigger aTrigger = new JoystickButton(controller, XboxController.Button.kA.value);
-
+        /*
         Trigger bTrigger = new JoystickButton(controller, XboxController.Button.kB.value);
         bTrigger.whileTrue(new SequentialCommandGroup(new StopTest()));
+<<<<<<< Updated upstream
+=======
+        */ 
+        Trigger bTrigger = new JoystickButton(controller, XboxController.Button.kB.value);
+        bTrigger.onTrue(new InstantCommand(()->drivetrain.resetGyro()));
+
+        //Small arm 
+        Trigger yTrigger = new JoystickButton(controller, XboxController.Button.kY.value);
+        yTrigger.onTrue(new InstantCommand(()->smolArm.setSpeed(-0.5)))
+        .onFalse(new InstantCommand(()->smolArm.stop()));
+
+        Trigger aTrigger = new JoystickButton(controller, XboxController.Button.kA.value);
+        aTrigger.onTrue(new InstantCommand(()->smolArm.setSpeed(0.5)))
+        .onFalse(new InstantCommand(()->smolArm.stop()));
+
+        Trigger leftTrigger = new JoystickButton(controller, XboxController.Button.kLeftBumper.value);
+        leftTrigger.onTrue(new InstantCommand(()->intake.setSpeed(.5)))
+        .onFalse(new InstantCommand(()->intake.setSpeed(0)));
+
+        Trigger rightTrigger = new JoystickButton(controller, XboxController.Button.kRightBumper.value);
+        rightTrigger.onTrue(new InstantCommand(()->intake.setSpeed(-.5)))
+        .onFalse(new InstantCommand(()->intake.setSpeed(0)));
+
+
+        
+>>>>>>> Stashed changes
     }
 
     public static DriverOI getInstance(){
@@ -60,7 +105,7 @@ public class DriverOI {
         double input = -controller.getRawAxis(XboxController.Axis.kLeftY.value);
 
         if(Math.abs(input) < 0.9){
-            return input *=0.7777; // Why 0.7777?
+            return input *= 0.7777; // Why 0.7777?
         }else{
             return input = Math.pow(input, 3);
         }

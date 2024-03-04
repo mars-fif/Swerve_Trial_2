@@ -26,6 +26,106 @@ public final class Constants {
     public static final double kFreeSpeedRpm = 5676;
   }
 
+<<<<<<< Updated upstream
+=======
+  public static class IntakeConstants{
+    //Change these later! 
+    public static final int intake_leftMotorID = 52; 
+    public static final int intake_rightMotorID = 51; 
+    
+    //regular NEOs are 80
+    public static final int kIntakeCurrentLimit = 20;
+
+  }
+
+  public static class ShooterConstants{
+  
+    public static final int shooter_leftMotorID = 54; 
+    public static final int shooter_rightMotorID = 53; 
+
+    //Change this later! 
+    public static final double shooterVelocityP = 0.005; 
+    public static final double shooterVelocityI = 0.0;
+    public static final double shooterVelocityD = 0.0;
+    
+    public static final int kShootCurrentLimit = 80;
+
+  }
+
+  public static class ArmConstants{
+    //right: 55
+    //left: 56 
+    public static final int arm_leftMotorID = 56; 
+    public static final int arm_rightMotorID = 55; 
+
+    //Change these to actual values later 
+    public static final int topLimitSwitchChannel = 0; 
+    public static final int bottomLimitSwitchChannel = 1; 
+
+    public static final int leftEncoderDIO = 0; 
+    public static final int rightEncoderDIO = 1;
+
+    //CHANGE THESE LATER! 
+    //Encoder values
+    //When the arm is positioned at a 90 degree angle (max), the values outputed by absolute encoders
+    public static final double leftEncPos = 0.4582; 
+    public static final double leftEncoderOffset = 0.7017; //Encoder values when the arm is in its home position
+    public static final double leftActualMaxPos = leftEncoderOffset - leftEncPos; 
+    public static final double rightEncPos = 0.4751; 
+    public static final double rightEncoderOffset = 0.2293; //Encoder values when the arm is in its home position
+    public static final double rightActualMaxPos = rightEncPos - rightEncoderOffset;
+    public static final double leftEncMaxDegrees = (leftActualMaxPos*360);
+    public static final double rightEncMaxDegrees = (rightActualMaxPos*360); 
+
+    public static final int kArmCurrentLimit = 80; 
+
+    //When the arm is going up, it should be using a lower P value, when it's going down it should use a high p value
+    public static final double armPosPHigh = 0.05;
+    public static final double armPosPLow = 0.005; 
+    public static final double armPosI = 0.0; 
+    public static final double armPosD = 0.0;
+    // D: 0.0002 
+
+    //Velocity PID
+    public static final double armVP = 0.05; 
+    public static final double armVI = 0.0; 
+    public static final double armVD = 0.0; 
+  }
+
+  public static class SmolArmConstants{
+    public static final int smolArm_MotorID = 57; 
+    //Motor gear ratio is at 1:125, neo encoder count is 42
+    public static final double sEncoderCountToDegrees = (360/125)*42;
+
+    public static final int smolArmCurrentLimit = 80;
+
+    public static final double armSP = 0.0; 
+    public static final double armSI = 0.0; 
+    public static final double armSD = 0.0; 
+
+    //Raw - 20?
+
+  }
+
+
+  public static class AutoConstants{
+    public static final double kMaxSpeedMetersPerSec = DriveConstants.kRealMaxSpeedMPS/8; 
+    public static final double kMaxAcceleration = .3;
+    
+    public static final double xControllerP = 0.000005;
+    public static final double yControllerP = 0.000005;
+    public static final double thetaControllerP = 0.005;
+
+    //sorry lol these naming schemes succcc
+    //Adjust values later
+
+    public static final double kmaxAngularSpeedRadiansPerSec = DriveConstants.kMaxAngularSpeed / 10; 
+    public static final double kMaxAngularAccelerationRadiansPerSecondSquared = Math.PI / 4; 
+    public static final TrapezoidProfile.Constraints thetaControllerConstraints = new TrapezoidProfile.Constraints(kmaxAngularSpeedRadiansPerSec, kMaxAngularAccelerationRadiansPerSecondSquared);
+
+  }
+
+>>>>>>> Stashed changes
   public static class DriveConstants{
     public static final double kTrackWidth = Units.inchesToMeters(24.245);
     public static final double kWheelBase = Units.inchesToMeters(24.245);
@@ -46,9 +146,9 @@ public final class Constants {
     public static final double kDriveWheelFreeSpeedRps = (kDrivingMotorFreeSpeedRps
                     * kWheelCircumferenceMeters) / kDrivingMotorReduction;
 
-    public static final double kDrivingEncoderPositionFactor = (kWheelDiameterMeters * Math.PI)
+    public static final double kDrivingEncoderPositionFactor = kWheelCircumferenceMeters
                     / kDrivingMotorReduction; // meters
-    public static final double kDrivingEncoderVelocityFactor = ((kWheelDiameterMeters * Math.PI)
+    public static final double kDrivingEncoderVelocityFactor = (kWheelCircumferenceMeters
                     / kDrivingMotorReduction) / 60.0; // meters per second
 
     public static final Translation2d[] swerveModuleLocations = {
