@@ -6,23 +6,17 @@ package frc.robot;
 
 import frc.robot.Constants;
 import frc.robot.commands.SwerveDriveCommand;
-<<<<<<< Updated upstream
-=======
 import frc.robot.commands.ArmCmds.SetArmHome;
 import frc.robot.commands.AutoCmds.A_RunIntakeIn;
 import frc.robot.commands.AutoCmds.A_SetArmHome;
 import frc.robot.commands.AutoCmds.A_SetArmSpeaker;
 import frc.robot.commands.AutoCmds.A_Shoot;
 //import frc.robot.commands.IntakeCmds.nomNom;
->>>>>>> Stashed changes
 import frc.robot.subsystems.Drivetrain;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.util.DriverOI;
-<<<<<<< Updated upstream
-import frc.robot.util.SwerveModuleConstants;
-=======
 import frc.robot.util.OperatorOI;
 import frc.robot.subsystems.Auto;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
@@ -32,7 +26,22 @@ import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.ProfiledPIDCommand;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import frc.robot.commands.ArmCmds.SetArmHome;
->>>>>>> Stashed changes
+import edu.wpi.first.math.trajectory.Trajectory;
+import frc.robot.subsystems.Arm;
+import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Shooter;
+import edu.wpi.first.math.trajectory.TrajectoryConfig;
+import frc.robot.Constants.AutoConstants;
+import frc.robot.Constants.DriveConstants;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import java.util.List;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
+import edu.wpi.first.math.controller.ProfiledPIDController;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -43,22 +52,17 @@ import frc.robot.commands.ArmCmds.SetArmHome;
 public class RobotContainer {
   private final Drivetrain drivetrain;
   private final DriverOI driverOI;
-<<<<<<< Updated upstream
-=======
   private final OperatorOI operatorOI;
+  private final Arm arm;
+  private final Intake intake; 
+  private final Shooter shooter;
   // private final Auto auto;
->>>>>>> Stashed changes
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     drivetrain = Drivetrain.getInstance();
     drivetrain.setDefaultCommand(new SwerveDriveCommand());
 
-<<<<<<< Updated upstream
-    driverOI = DriverOI.getInstance();
-  }
-
-=======
     arm = Arm.getInstance();
     arm.setDefaultCommand(new SetArmHome());
     // arm.register();
@@ -169,7 +173,6 @@ public class RobotContainer {
   
 
 
->>>>>>> Stashed changes
   /**
    * Use this method to define your trigger->command mappings. Triggers can be created via the
    * {@link Trigger#Trigger(java.util.function.BooleanSupplier)} constructor with an arbitrary
