@@ -11,26 +11,19 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.commands.StopTest;
 import frc.robot.commands.StraightenDrivetrain;
-<<<<<<< Updated upstream
-//import frc.robot.subsystems.Drivetrain;
-=======
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.SmolArm;
->>>>>>> Stashed changes
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 
 public class DriverOI {
     public static DriverOI instance;
 
-<<<<<<< Updated upstream
-    //private final Drivetrain drivetrain;
-=======
     private final Drivetrain drivetrain;
     private final Intake intake; 
 
     private final SmolArm smolArm;
 
->>>>>>> Stashed changes
     private double m_currentRotation = 0.0;
     private double m_currentTranslationDir = 0.0;
     private double m_currentTranslationMag = 0.0;
@@ -47,13 +40,9 @@ public class DriverOI {
     };
 
     public DriverOI(){
-<<<<<<< Updated upstream
-        //drivetrain = Drivetrain.getInstance();
-=======
         drivetrain = Drivetrain.getInstance();
         intake = Intake.getInstance();
         smolArm = SmolArm.getInstance();
->>>>>>> Stashed changes
 
         configureController();
     }
@@ -65,9 +54,8 @@ public class DriverOI {
         /*
         Trigger bTrigger = new JoystickButton(controller, XboxController.Button.kB.value);
         bTrigger.whileTrue(new SequentialCommandGroup(new StopTest()));
-<<<<<<< Updated upstream
-=======
         */ 
+        
         Trigger bTrigger = new JoystickButton(controller, XboxController.Button.kB.value);
         bTrigger.onTrue(new InstantCommand(()->drivetrain.resetGyro()));
 
@@ -90,7 +78,6 @@ public class DriverOI {
 
 
         
->>>>>>> Stashed changes
     }
 
     public static DriverOI getInstance(){

@@ -2,6 +2,7 @@ package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
+import com.revrobotics.CANSparkBase.ControlType;
 import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
@@ -11,6 +12,7 @@ import edu.wpi.first.wpilibj.motorcontrol.MotorController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import com.revrobotics.SparkPIDController;
+import edu.wpi.first.math.MathUtil;
 
 public class Shooter extends SubsystemBase{
     private static Shooter shooter; 
@@ -79,6 +81,11 @@ public class Shooter extends SubsystemBase{
         m_leftMotor.set(speed);
 
         //setSpeed(MathUtil.clamp(armPosPID.calculate(getEncoderAngle(),setpoint), -.15, 0.25));
+    }
+
+    //Uses PID to set the shooter at a constant speed
+    public void setSpeedConst(double desiredSpeed){
+        //setSpeed(shooterPIDLeft.setReference(desiredSpeed, ControlType.kDutyCycle, 0, desiredSpeed, null));
     }
 
 

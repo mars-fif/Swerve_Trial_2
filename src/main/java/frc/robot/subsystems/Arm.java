@@ -50,7 +50,7 @@ public class Arm extends SubsystemBase{
         SmartDashboard.putNumber("Get Right Encoder Angle", getEncoderAngle());
         SmartDashboard.putNumber("ArmPID P Value", armPosPID.getP());
 
-        SmartDashboard.putBoolean("Arm in position", armInPos());
+        SmartDashboard.putBoolean("Arm within pos", withinRange(getEncoderAngle(), 86));
     }
 
     public static Arm getInstance(){
@@ -114,12 +114,27 @@ public class Arm extends SubsystemBase{
         setSpeed(MathUtil.clamp(armPosPID.calculate(getEncoderAngle(),setpoint), -.15, 0.25));
     }
 
-    public boolean armInPos(){
-        if (getEncoderAngle() > 108 - 3){
+    //For arm auto 
+
+    public boolean withinRange(double encoderVal, double setpoint){
+        double lowerBound = setpoint - 3; 
+        double upperBound = setpoint + 3;
+        
+        if (encoderVal >= lowerBound && encoderVal <= upperBound){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    /*
+    public boolean armInPos(double setpoint){
+        if (withinRange(getEncoderAngle(), setpoint)){
             return true;
         }
         return false;
     }
+    */
 
     public void stop(){
         m_leftMotor.set(0);

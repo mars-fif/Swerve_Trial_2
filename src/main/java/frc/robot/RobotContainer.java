@@ -18,7 +18,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.util.DriverOI;
 import frc.robot.util.OperatorOI;
-import frc.robot.subsystems.Auto;
+//import frc.robot.subsystems.Auto;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -83,7 +83,7 @@ public class RobotContainer {
   }
 
   public Command getAutonomousCommand(){
-  
+    
     System.out.println("AutoConfig Starting");
     System.out.println("AutoConfig Starting");
     System.out.println("AutoConfig Starting");
@@ -99,20 +99,9 @@ public class RobotContainer {
     Trajectory trajectory = TrajectoryGenerator.generateTrajectory(
       new Pose2d(0, 0, new Rotation2d(0)),
       List.of(
-        new Translation2d(0.5, 0)
+        new Translation2d(1, 0)
       ),
-      new Pose2d(1.0, 0, Rotation2d.fromDegrees(0)),
-      trajectoryConfig
-    ); 
-
-    //Should go a meter forward, a meter left? 
-    Trajectory Ltrajectory = TrajectoryGenerator.generateTrajectory(
-      new Pose2d(0, 0, new Rotation2d(0)),
-      List.of(
-        new Translation2d(1, 0),
-        new Translation2d(0,.1)
-      ),
-      new Pose2d(0, 1, Rotation2d.fromDegrees(0)),
+      new Pose2d(2, 0, Rotation2d.fromDegrees(90)),
       trajectoryConfig
     ); 
 
@@ -143,6 +132,7 @@ public class RobotContainer {
     );
     
     
+    
 
     //Nothing at all 
     /* 
@@ -164,8 +154,16 @@ public class RobotContainer {
     );
     */
     
-    
+    /* 
+    return new SequentialCommandGroup(
+      //Get the robot arm back to its home position 
+      //Get robot going to the X position for speaker 
+      //Run the shooter for a good 3 seconds to let it ramp up 
+      //Run the intake for 2 seconds or so 
+      new A_SetArmSpeaker()
+    );
 
+    */
   }
 
   

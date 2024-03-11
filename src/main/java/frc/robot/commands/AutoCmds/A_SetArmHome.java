@@ -26,11 +26,12 @@ public class A_SetArmHome extends Command{
     @Override
     public void end(boolean interrupted){
         
+        
     }
 
     @Override
     public boolean isFinished(){
-        if (arm.armInPos()){
+        if (arm.withinRange(arm.getEncoderAngle(), 86)){
             return true;
         }
         return false;   

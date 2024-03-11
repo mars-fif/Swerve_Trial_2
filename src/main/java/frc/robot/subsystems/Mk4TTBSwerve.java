@@ -135,5 +135,6 @@ public class Mk4TTBSwerve{
         SmartDashboard.putNumber(this.moduleNum + " M Angle", m_turningEncoder.getPosition()-m_angleOffset);
         SmartDashboard.putNumber(this.moduleNum + " Set Point", m_desiredState.angle.getDegrees());
         SmartDashboard.putNumber(this.moduleNum + " Speed Setpoint", m_desiredState.speedMetersPerSecond);
+        SmartDashboard.putNumber(this.moduleNum + "Drive Encoder", m_driveEncoder.getPosition());
     }
 }

@@ -9,6 +9,7 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.util.Units;
 import frc.robot.util.SwerveModuleConstants;
+import edu.wpi.first.math.trajectory.TrapezoidProfile;
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
  * constants. This class should not be used for any other purpose. All constants should be declared
@@ -26,8 +27,6 @@ public final class Constants {
     public static final double kFreeSpeedRpm = 5676;
   }
 
-<<<<<<< Updated upstream
-=======
   public static class IntakeConstants{
     //Change these later! 
     public static final int intake_leftMotorID = 52; 
@@ -112,8 +111,8 @@ public final class Constants {
     public static final double kMaxSpeedMetersPerSec = DriveConstants.kRealMaxSpeedMPS/8; 
     public static final double kMaxAcceleration = .3;
     
-    public static final double xControllerP = 0.000005;
-    public static final double yControllerP = 0.000005;
+    public static final double xControllerP = 1.0;
+    public static final double yControllerP = 1.0;
     public static final double thetaControllerP = 0.005;
 
     //sorry lol these naming schemes succcc
@@ -125,7 +124,6 @@ public final class Constants {
 
   }
 
->>>>>>> Stashed changes
   public static class DriveConstants{
     public static final double kTrackWidth = Units.inchesToMeters(24.245);
     public static final double kWheelBase = Units.inchesToMeters(24.245);
@@ -181,7 +179,7 @@ public final class Constants {
       //Left Front
       public static final int TURNING_SPARK_ID = 11;
       public static final int DRIVING_SPARK_ID = 12;
-      public static final Rotation2d angleOffset = new Rotation2d(2.62); //2.63
+      public static final Rotation2d angleOffset = new Rotation2d(2.62); //2.62 <--Original
       public static final boolean inverted = false;
 
       public static final SwerveModuleConstants constants = new SwerveModuleConstants(DRIVING_SPARK_ID, TURNING_SPARK_ID,

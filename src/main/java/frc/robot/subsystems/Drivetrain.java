@@ -12,6 +12,7 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.ADIS16470_IMU;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.Swerve;
@@ -121,7 +122,7 @@ public class Drivetrain extends SubsystemBase{
 
     public ChassisSpeeds getRobotChassisSpeeds(){
         return DriveConstants.kinematics.toChassisSpeeds(
-        backLeftSwerveModule.getState(),
+            backLeftSwerveModule.getState(),
             backRightSwerveModule.getState(),    
             frontLeftSwerveModule.getState(),
             frontRightSwerveModule.getState()
@@ -197,6 +198,11 @@ public class Drivetrain extends SubsystemBase{
         setSwerveModuleStates(swerveModuleStates);
     }
 
+    public void autoDrive(ChassisSpeeds speeds){
+        swerveModuleStates = DriveConstants.kinematics.toSwerveModuleStates(speeds);
+        setSwerveModuleStates(swerveModuleStates);
+    }
+
     public double getHeading(){
         heading = -gyro.getAngle(gyro.getYawAxis());
         return Math.IEEEremainder(heading, 360);
@@ -206,14 +212,15 @@ public class Drivetrain extends SubsystemBase{
         return Rotation2d.fromDegrees(heading);
     }
 
+    public void resetPose(Pose2d pose){
+        resetGyro();
+        //Pose2d womp = new Pose2d(new Translation2d(2,7), new Rotation2d(0));
+        odometry.resetPosition(getHeadingAsRotation2d(),swerveModulePositions, pose);
+    }
+
     public void resetGyro(){
-<<<<<<< Updated upstream
-        gyro.reset();
-        isFlipped = true;
-=======
         gyro.reset();   
         //isFlipped = true;
->>>>>>> Stashed changes
     }
 
     public Pose2d getPose(){

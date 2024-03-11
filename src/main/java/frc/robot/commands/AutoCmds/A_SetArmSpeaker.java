@@ -25,11 +25,12 @@ public class A_SetArmSpeaker extends Command{
 
     @Override
     public void end(boolean interrupted){
+        
     }
 
     @Override
     public boolean isFinished(){
-        if (arm.armInPos()){
+        if (arm.withinRange(arm.getEncoderAngle(), 108)){
             return true;
         }
         return false;   
