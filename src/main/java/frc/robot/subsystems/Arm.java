@@ -17,7 +17,6 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.math.MathUtil;
 
 public class Arm extends SubsystemBase{
-    //NEED VELOCITY PID TO SLOW THE ARM DOWN WHEN IT'S GOING DOWN! 
     private static Arm arm; 
     private final CANSparkMax m_leftMotor; 
     private final CANSparkMax m_rightMotor; 
@@ -46,11 +45,15 @@ public class Arm extends SubsystemBase{
         
         SmartDashboard.putNumber("Left Arm Encoder Value", getEncoderAbsPos(leftEncoder));
         SmartDashboard.putNumber("Right Arm Encoder Value", getEncoderAbsPos(rightEncoder));
+        
+        SmartDashboard.putNumber("LA Motor Temp", m_leftMotor.getMotorTemperature());
+        SmartDashboard.putNumber("RA Motor Temp", m_rightMotor.getMotorTemperature());
+        
 
-        SmartDashboard.putNumber("Get Right Encoder Angle", getEncoderAngle());
-        SmartDashboard.putNumber("ArmPID P Value", armPosPID.getP());
+        //SmartDashboard.putNumber("Get Right Encoder Angle", getEncoderAngle());
+        //SmartDashboard.putNumber("ArmPID P Value", armPosPID.getP());
 
-        SmartDashboard.putBoolean("Arm within pos", withinRange(getEncoderAngle(), 86));
+        //SmartDashboard.putBoolean("Arm within pos", withinRange(getEncoderAngle(), 86));
     }
 
     public static Arm getInstance(){
@@ -91,16 +94,6 @@ public class Arm extends SubsystemBase{
     //...
 
     public double getEncoderAngle(){
-        /*
-        double leftEncoderAngle = getEncoderAbsPos(leftEncoder)/ArmConstants.leftEncToDegrees;
-        double rightEncoderAngle = getEncoderAbsPos(rightEncoder)/ArmConstants.rightEncToDegrees;
-        double tolerance = 0.1; //CHANGE THIS VALUE!
-        if (Math.abs(leftEncoderAngle - rightEncoderAngle) < tolerance){
-            return leftEncoderAngle;
-        }else{
-            return rightEncoderAngle;
-        }
-        */
         return getEncoderAbsPos(rightEncoder)*360;
     }
 

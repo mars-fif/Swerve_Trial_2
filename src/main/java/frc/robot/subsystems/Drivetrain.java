@@ -40,8 +40,6 @@ public class Drivetrain extends SubsystemBase{
 
     private final SwerveDrivePoseEstimator odometry;
 
-
-
     public Drivetrain(){
         frontLeftSwerveModule = new Mk4TTBSwerve(0, Swerve.Mod0.constants);
         frontRightSwerveModule = new Mk4TTBSwerve(3, Swerve.Mod3.constants);
@@ -87,6 +85,9 @@ public class Drivetrain extends SubsystemBase{
         correctHeadingPreviousTime = 0.0;
         correctHeadingOffTime = 0.0;
         correctHeadingTargetHeading = getHeadingAsRotation2d();
+
+        //Configure AutoBuilder 
+        
     }
 
     public static Drivetrain getInstance(){
@@ -199,8 +200,14 @@ public class Drivetrain extends SubsystemBase{
     }
 
     public void autoDrive(ChassisSpeeds speeds){
-        swerveModuleStates = DriveConstants.kinematics.toSwerveModuleStates(speeds);
-        setSwerveModuleStates(swerveModuleStates);
+        //swerveModuleStates = DriveConstants.kinematics.toSwerveModuleStates(speeds);
+        //setSwerveModuleStates(swerveModuleStates);
+        
+        //Pathplanner example code
+        ChassisSpeeds targetSpeeds = ChassisSpeeds.discretize(speeds, 0.02);
+
+        SwerveModuleState[] targetStates = DriveConstants.kinematics.toSwerveModuleStates(targetSpeeds);
+        setSwerveModuleStates(targetStates);
     }
 
     public double getHeading(){

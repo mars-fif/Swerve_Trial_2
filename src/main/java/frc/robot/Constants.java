@@ -133,6 +133,10 @@ public final class Constants {
     public static final double kRealMaxSpeedMPS = 3.81;
     public static final double kMaxAngularSpeed = 4 * Math.PI / 3;
  
+    public static final double kNormalModeTranslationSpeedScale = 1.0;
+    public static final double kNormalModeRotationSpeedScale = 1.0;
+    public static final double kSlowModeTranslationSpeedScale = 0.4;
+    public static final double kSlowModeRotationSpeedScale = 0.4;
 
     public static final int kDrivingMotorPinionTeeth = 14;
     public static final double kDrivingMotorFreeSpeedRps = NeoMotorConstants.kFreeSpeedRpm / 60;

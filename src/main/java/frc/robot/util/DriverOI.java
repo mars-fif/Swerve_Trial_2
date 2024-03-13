@@ -39,15 +39,25 @@ public class DriverOI {
         NONE, FORWARDS, LEFT, RIGHT, BACKWARDS
     };
 
+    //Added drive modes 
+    public enum DriveSpeedMode{
+        NORMAL, SLOW
+    };
+
+    private DriveSpeedMode driveSpeedMode;
+
     public DriverOI(){
         drivetrain = Drivetrain.getInstance();
         intake = Intake.getInstance();
         smolArm = SmolArm.getInstance();
 
+        driveSpeedMode = DriveSpeedMode.NORMAL;
+
         configureController();
     }
 
     public void configureController(){
+
         Trigger xTrigger = new JoystickButton(controller, XboxController.Button.kX.value);
         xTrigger.whileTrue(new SequentialCommandGroup(new StraightenDrivetrain()));
 
@@ -56,18 +66,22 @@ public class DriverOI {
         bTrigger.whileTrue(new SequentialCommandGroup(new StopTest()));
         */ 
         
+        //Resets the gyro
         Trigger bTrigger = new JoystickButton(controller, XboxController.Button.kB.value);
         bTrigger.onTrue(new InstantCommand(()->drivetrain.resetGyro()));
 
-        //Small arm 
+        //Small arm:
+        //Brings the small arm up
         Trigger yTrigger = new JoystickButton(controller, XboxController.Button.kY.value);
         yTrigger.onTrue(new InstantCommand(()->smolArm.setSpeed(-0.5)))
         .onFalse(new InstantCommand(()->smolArm.stop()));
 
+        //Brings the small arm down
         Trigger aTrigger = new JoystickButton(controller, XboxController.Button.kA.value);
         aTrigger.onTrue(new InstantCommand(()->smolArm.setSpeed(0.5)))
         .onFalse(new InstantCommand(()->smolArm.stop()));
 
+        //Intake: leftTrigger is outtake, rightTrigger is intake 
         Trigger leftTrigger = new JoystickButton(controller, XboxController.Button.kLeftBumper.value);
         leftTrigger.onTrue(new InstantCommand(()->intake.setSpeed(.5)))
         .onFalse(new InstantCommand(()->intake.setSpeed(0)));
@@ -76,6 +90,10 @@ public class DriverOI {
         rightTrigger.onTrue(new InstantCommand(()->intake.setSpeed(-.5)))
         .onFalse(new InstantCommand(()->intake.setSpeed(0)));
 
+        //Slow mode for driving 
+        Trigger slowMode = new JoystickButton(controller, XboxController.Button.kLeftStick.value);
+        slowMode.onTrue(new InstantCommand(()-> setDriveSpeedMode(DriveSpeedMode.SLOW)))
+        .onFalse(new InstantCommand(()-> setDriveSpeedMode(DriveSpeedMode.NORMAL)));
 
         
     }
@@ -119,7 +137,7 @@ public class DriverOI {
             combinedRotation = (rightRotation - leftRotation) / 2.0;
         }
 
-        return combinedRotation * 1.0 * DriveConstants.kMaxAngularSpeed;
+        return combinedRotation * getRotationSpeedCoeff() * DriveConstants.kMaxAngularSpeed;
     }
 
     public Translation2d getCenterOfRotation() {
@@ -224,6 +242,19 @@ public class DriverOI {
         }
     }
 
+    public void setDriveSpeedMode(DriveSpeedMode mode) {
+        driveSpeedMode = mode;
+    }
+
+    //NOTE: Not really being used anywhere? Is this really needed? 
+    public void toggleDriveSpeedMode(){
+        if(driveSpeedMode.equals(DriveSpeedMode.NORMAL)){
+            driveSpeedMode = DriveSpeedMode.SLOW;
+        } else {
+            driveSpeedMode = DriveSpeedMode.NORMAL;
+        }
+    }
+
     public Translation2d getSwerveTranslation(){
         double xSpeed = getForward();
         double ySpeed = getStrafe();
@@ -287,10 +318,27 @@ public class DriverOI {
             double new_translation_x = next_translation.getX() - (deadband_vector.getX()) / (1 - deadband_vector.getX());
             double new_translation_y = next_translation.getY() - (deadband_vector.getY()) / (1 - deadband_vector.getY());
 
-            next_translation = new Translation2d(new_translation_x * 1.0 * DriveConstants.kRealMaxSpeedMPS,
-                                                 new_translation_y * 1.0 * DriveConstants.kRealMaxSpeedMPS);
+            next_translation = new Translation2d(new_translation_x * getTranslationSpeedCoeff() * DriveConstants.kRealMaxSpeedMPS,
+                                                 new_translation_y * getTranslationSpeedCoeff() * DriveConstants.kRealMaxSpeedMPS);
                                              
             return next_translation;
+        }
+    }
+
+    public double getTranslationSpeedCoeff(){
+        if (driveSpeedMode == DriveSpeedMode.SLOW) {
+            return DriveConstants.kSlowModeTranslationSpeedScale;
+        } else {
+            return DriveConstants.kNormalModeTranslationSpeedScale;
+        }
+    }
+
+    //Is this also being used?
+    public double getRotationSpeedCoeff() {
+        if (driveSpeedMode == DriveSpeedMode.SLOW) {
+            return DriveConstants.kSlowModeRotationSpeedScale;
+        } else {
+            return DriveConstants.kNormalModeRotationSpeedScale;
         }
     }
     

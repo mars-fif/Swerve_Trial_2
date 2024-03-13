@@ -6,6 +6,7 @@ import com.revrobotics.CANSparkLowLevel.MotorType;
 
 import frc.robot.Constants;
 import frc.robot.Constants.IntakeConstants;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.motorcontrol.MotorController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -15,16 +16,20 @@ public class Intake extends SubsystemBase{
     private final CANSparkMax m_leftMotor;
     private final CANSparkMax m_rightMotor; 
 
+    private final DigitalInput noteSensor;
+
     public Intake(){
         m_leftMotor = new CANSparkMax(IntakeConstants.intake_leftMotorID, MotorType.kBrushless);
         m_rightMotor = new CANSparkMax(IntakeConstants.intake_rightMotorID, MotorType.kBrushless); 
+
+        noteSensor = new DigitalInput(3);
 
         config();
     }
 
     @Override
     public void periodic(){
-
+        SmartDashboard.putBoolean("Note In", noteSensor.get());
     }
 
     public static Intake getInstance(){

@@ -18,7 +18,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.util.DriverOI;
 import frc.robot.util.OperatorOI;
-//import frc.robot.subsystems.Auto;
+import frc.robot.subsystems.Auto;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -33,11 +33,15 @@ import frc.robot.subsystems.Shooter;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import java.util.List;
+
+import com.pathplanner.lib.auto.AutoBuilder;
+
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
@@ -56,12 +60,14 @@ public class RobotContainer {
   private final Arm arm;
   private final Intake intake; 
   private final Shooter shooter;
-  // private final Auto auto;
+  private final Auto auto;
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     drivetrain = Drivetrain.getInstance();
     drivetrain.setDefaultCommand(new SwerveDriveCommand());
+
+    auto = Auto.getInstance();
 
     arm = Arm.getInstance();
     arm.setDefaultCommand(new SetArmHome());
@@ -73,17 +79,16 @@ public class RobotContainer {
     shooter = Shooter.getInstance();
     shooter.register();
 
-    
 
     //Xbox controllers: Driver(0), Operator(1)
     driverOI = DriverOI.getInstance(); 
     operatorOI = OperatorOI.getInstance();
-    // auto = Auto.getInstance();
 
   }
 
   public Command getAutonomousCommand(){
-    
+    return auto.getAutonomousCommand();
+    /* 
     System.out.println("AutoConfig Starting");
     System.out.println("AutoConfig Starting");
     System.out.println("AutoConfig Starting");
@@ -130,8 +135,8 @@ public class RobotContainer {
       swerveControllerCommand,
       new InstantCommand(() -> drivetrain.stopSwerveModules())
     );
-    
-    
+
+    */
     
 
     //Nothing at all 
