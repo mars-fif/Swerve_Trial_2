@@ -32,7 +32,8 @@ public class A_SetArmSpeaker extends Command{
     public boolean isFinished(){
         if (arm.withinRange(arm.getEncoderAngle(), 108)){
             return true;
-        }
-        return false;   
+        }else{
+            return false;
+        } 
     }
 }

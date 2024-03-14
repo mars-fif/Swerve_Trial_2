@@ -18,7 +18,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.util.DriverOI;
 import frc.robot.util.OperatorOI;
-import frc.robot.subsystems.Auto;
+//import frc.robot.subsystems.Auto;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -33,14 +33,18 @@ import frc.robot.subsystems.Shooter;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import java.util.List;
+import edu.wpi.first.util.sendable.Sendable;
 
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.commands.PathPlannerAuto;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.math.controller.PIDController;
@@ -60,14 +64,15 @@ public class RobotContainer {
   private final Arm arm;
   private final Intake intake; 
   private final Shooter shooter;
-  private final Auto auto;
+  //private final Auto auto;
+
+  private final SendableChooser<Command> autoChooser;
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     drivetrain = Drivetrain.getInstance();
     drivetrain.setDefaultCommand(new SwerveDriveCommand());
 
-    auto = Auto.getInstance();
 
     arm = Arm.getInstance();
     arm.setDefaultCommand(new SetArmHome());
@@ -84,10 +89,20 @@ public class RobotContainer {
     driverOI = DriverOI.getInstance(); 
     operatorOI = OperatorOI.getInstance();
 
+    //auto = Auto.getInstance();
+
+    autoChooser = AutoBuilder.buildAutoChooser(); // Default auto will be `Commands.none()`
+    SmartDashboard.putData("Auto Chooser", autoChooser);
+
+    //configureAutoRoutines();
   }
 
+  //private void configureAutoRoutines(){
+    //autoChooser.addOption("Test Auto", new PathPlannerAuto("TestAuto"));
+  //}
+
   public Command getAutonomousCommand(){
-    return auto.getAutonomousCommand();
+    return autoChooser.getSelected();
     /* 
     System.out.println("AutoConfig Starting");
     System.out.println("AutoConfig Starting");

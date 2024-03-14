@@ -111,9 +111,9 @@ public final class Constants {
     public static final double kMaxSpeedMetersPerSec = DriveConstants.kRealMaxSpeedMPS/8; 
     public static final double kMaxAcceleration = .3;
     
-    public static final double xControllerP = 1.0;
-    public static final double yControllerP = 1.0;
-    public static final double thetaControllerP = 0.005;
+    public static final double xControllerP = 1;
+    public static final double yControllerP = 1;
+    public static final double thetaControllerP = 1;
 
     //sorry lol these naming schemes succcc
     //Adjust values later
@@ -135,8 +135,8 @@ public final class Constants {
  
     public static final double kNormalModeTranslationSpeedScale = 1.0;
     public static final double kNormalModeRotationSpeedScale = 1.0;
-    public static final double kSlowModeTranslationSpeedScale = 0.4;
-    public static final double kSlowModeRotationSpeedScale = 0.4;
+    public static final double kSlowModeTranslationSpeedScale = 0.2;
+    public static final double kSlowModeRotationSpeedScale = 0.2;
 
     public static final int kDrivingMotorPinionTeeth = 14;
     public static final double kDrivingMotorFreeSpeedRps = NeoMotorConstants.kFreeSpeedRpm / 60;

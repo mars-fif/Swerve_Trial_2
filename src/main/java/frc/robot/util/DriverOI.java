@@ -67,8 +67,8 @@ public class DriverOI {
         */ 
         
         //Resets the gyro
-        Trigger bTrigger = new JoystickButton(controller, XboxController.Button.kB.value);
-        bTrigger.onTrue(new InstantCommand(()->drivetrain.resetGyro()));
+        Trigger resetGyro = new JoystickButton(controller, XboxController.Button.kBack.value);
+        resetGyro.onTrue(new InstantCommand(()->drivetrain.resetGyro()));
 
         //Small arm:
         //Brings the small arm up
@@ -77,23 +77,24 @@ public class DriverOI {
         .onFalse(new InstantCommand(()->smolArm.stop()));
 
         //Brings the small arm down
-        Trigger aTrigger = new JoystickButton(controller, XboxController.Button.kA.value);
-        aTrigger.onTrue(new InstantCommand(()->smolArm.setSpeed(0.5)))
+        Trigger bTrigger = new JoystickButton(controller, XboxController.Button.kB.value);
+        bTrigger.onTrue(new InstantCommand(()->smolArm.setSpeed(0.5)))
         .onFalse(new InstantCommand(()->smolArm.stop()));
 
-        //Intake: leftTrigger is outtake, rightTrigger is intake 
-        Trigger leftTrigger = new JoystickButton(controller, XboxController.Button.kLeftBumper.value);
-        leftTrigger.onTrue(new InstantCommand(()->intake.setSpeed(.5)))
+
+        //Intake: b is intake, a is out 
+        Trigger intakeIn = new JoystickButton(controller, XboxController.Button.kB.value);
+        intakeIn.onTrue(new InstantCommand(()->intake.setSpeed(.5)))
         .onFalse(new InstantCommand(()->intake.setSpeed(0)));
 
-        Trigger rightTrigger = new JoystickButton(controller, XboxController.Button.kRightBumper.value);
-        rightTrigger.onTrue(new InstantCommand(()->intake.setSpeed(-.5)))
+        Trigger intakeOut = new JoystickButton(controller, XboxController.Button.kA.value);
+        intakeOut.onTrue(new InstantCommand(()->intake.setSpeed(-.5)))
         .onFalse(new InstantCommand(()->intake.setSpeed(0)));
 
         //Slow mode for driving 
         Trigger slowMode = new JoystickButton(controller, XboxController.Button.kLeftStick.value);
-        slowMode.onTrue(new InstantCommand(()-> setDriveSpeedMode(DriveSpeedMode.SLOW)))
-        .onFalse(new InstantCommand(()-> setDriveSpeedMode(DriveSpeedMode.NORMAL)));
+        slowMode.toggleOnTrue(new InstantCommand(()-> toggleDriveSpeedMode()));
+        //.toggleOnFalse(new InstantCommand(()-> setDriveSpeedMode(DriveSpeedMode.NORMAL)));
 
         
     }
@@ -247,6 +248,7 @@ public class DriverOI {
     }
 
     //NOTE: Not really being used anywhere? Is this really needed? 
+    
     public void toggleDriveSpeedMode(){
         if(driveSpeedMode.equals(DriveSpeedMode.NORMAL)){
             driveSpeedMode = DriveSpeedMode.SLOW;
@@ -254,7 +256,7 @@ public class DriverOI {
             driveSpeedMode = DriveSpeedMode.NORMAL;
         }
     }
-
+    
     public Translation2d getSwerveTranslation(){
         double xSpeed = getForward();
         double ySpeed = getStrafe();
@@ -326,6 +328,7 @@ public class DriverOI {
     }
 
     public double getTranslationSpeedCoeff(){
+        
         if (driveSpeedMode == DriveSpeedMode.SLOW) {
             return DriveConstants.kSlowModeTranslationSpeedScale;
         } else {
