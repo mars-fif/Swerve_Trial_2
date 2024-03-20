@@ -49,6 +49,7 @@ public final class Constants {
     
     public static final int kShootCurrentLimit = 80;
 
+
   }
 
   public static class ArmConstants{
@@ -111,8 +112,8 @@ public final class Constants {
     public static final double kMaxSpeedMetersPerSec = DriveConstants.kRealMaxSpeedMPS/8; 
     public static final double kMaxAcceleration = .3;
     
-    public static final double xControllerP = 1;
-    public static final double yControllerP = 1;
+    public static final double xControllerP = 7.0;
+    //public static final double yControllerP = 0;
     public static final double thetaControllerP = 1;
 
     //sorry lol these naming schemes succcc

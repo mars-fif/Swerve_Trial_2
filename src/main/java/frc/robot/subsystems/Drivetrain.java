@@ -6,6 +6,7 @@ import com.pathplanner.lib.util.PIDConstants;
 import com.pathplanner.lib.util.PathPlannerLogging;
 import com.pathplanner.lib.util.ReplanningConfig;
 
+import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -15,15 +16,22 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.units.MutableMeasure;
+import edu.wpi.first.units.Voltage;
+import edu.wpi.first.units.MutableMeasure;
+import edu.wpi.first.units.Voltage;
 import edu.wpi.first.wpilibj.ADIS16470_IMU;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.Swerve;
+import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 
 public class Drivetrain extends SubsystemBase{
     private static Drivetrain drivetrain;
@@ -48,7 +56,12 @@ public class Drivetrain extends SubsystemBase{
 
     private final SwerveDrivePoseEstimator odometry;
 
+    // Mutable holder for unit-safe voltage values, persisted to avoid reallocation.
+
     public Drivetrain(){
+
+        CameraServer.startAutomaticCapture();
+
         frontLeftSwerveModule = new Mk4TTBSwerve(0, Swerve.Mod0.constants);
         frontRightSwerveModule = new Mk4TTBSwerve(3, Swerve.Mod3.constants);
         backLeftSwerveModule = new Mk4TTBSwerve(1, Swerve.Mod1.constants);
@@ -102,7 +115,7 @@ public class Drivetrain extends SubsystemBase{
           this::autoDrive, // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds
           new HolonomicPathFollowerConfig( // HolonomicPathFollowerConfig, this should likely live in your Constants class
                   new PIDConstants(AutoConstants.xControllerP, 0.0, 0.0), // Translation PID constants
-                  new PIDConstants(AutoConstants.thetaControllerP, 0.0, 0.0), // Rotation PID constants
+                  new PIDConstants(AutoConstants.thetaControllerP, 0.0, 0.4), // Rotation PID constants
                   DriveConstants.kRealMaxSpeedMPS, // Max module speed, in m/s
                   DriveConstants.kBaseRadius, // Drive base radius in meters. Distance from robot center to furthest module.
                   new ReplanningConfig() // Default path replanning config. See the API for the options here
@@ -120,6 +133,7 @@ public class Drivetrain extends SubsystemBase{
           },
         this // Reference to this subsystem to set requirements
       );
+
 
     }
 

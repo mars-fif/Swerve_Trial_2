@@ -28,13 +28,13 @@ public class OperatorOI {
 
     public void configureController(){
         
-        Trigger shootOutSlow = new JoystickButton(controller, XboxController.Button.kLeftBumper.value);
-        shootOutSlow.onTrue(new InstantCommand(()->shooter.setSpeed(-.30)))
+        Trigger shooterIntake = new JoystickButton(controller, XboxController.Button.kLeftBumper.value);
+        shooterIntake.onTrue(new InstantCommand(()->shooter.setSpeed(.30)))
         .onFalse(new InstantCommand(()->shooter.setSpeed(0)));
         
         //This is for shooting the game piece:
         Trigger shootOut = new JoystickButton(controller, XboxController.Button.kRightBumper.value);
-        shootOut.onTrue(new InstantCommand(()->shooter.setSpeed(-1)))
+        shootOut.onTrue(new InstantCommand(()->shooter.setSpeed(-.8)))
         .onFalse(new InstantCommand(()->shooter.setSpeed(0))); 
 
         //For bringing arm up and down 
@@ -49,7 +49,6 @@ public class OperatorOI {
         */
 
         //Commands to set arm positions
-        
          
         Trigger setArmHome = new JoystickButton(controller, XboxController.Button.kA.value);
         setArmHome.onTrue(new SetArmHome());

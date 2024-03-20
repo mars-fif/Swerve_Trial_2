@@ -17,19 +17,20 @@ public class Intake extends SubsystemBase{
     private final CANSparkMax m_rightMotor; 
 
     private final DigitalInput noteSensor;
+    public double count;
 
     public Intake(){
         m_leftMotor = new CANSparkMax(IntakeConstants.intake_leftMotorID, MotorType.kBrushless);
         m_rightMotor = new CANSparkMax(IntakeConstants.intake_rightMotorID, MotorType.kBrushless); 
 
         noteSensor = new DigitalInput(3);
-
         config();
     }
 
     @Override
     public void periodic(){
         SmartDashboard.putBoolean("Note In", noteSensor.get());
+        //Sensor returns as t
     }
 
     public static Intake getInstance(){
@@ -49,6 +50,20 @@ public class Intake extends SubsystemBase{
         m_rightMotor.setIdleMode(IdleMode.kCoast);
         m_rightMotor.setInverted(false);
     }
+
+    public boolean isEmpty(){
+        //Returns true when it's empty, false when detects a note
+        return noteSensor.get();
+    }
+
+    public boolean noteReady(){
+        if (isEmpty() == false){
+            return true;
+        }else{
+            return false; 
+        }
+    }
+
 
     public void setSpeed(double speed){
         m_rightMotor.set(speed);

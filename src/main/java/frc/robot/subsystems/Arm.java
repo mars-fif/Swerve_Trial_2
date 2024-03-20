@@ -27,6 +27,7 @@ public class Arm extends SubsystemBase{
     //private final PIDController armPosPID = new PIDController(ArmConstants.armPosPLow, ArmConstants.armPosI, ArmConstants.armPosD);
     private final PIDController armPosPID;
     //private final PIDController armVelocityPID = new PIDController(ArmConstants.armVP, ArmConstants.armVI, ArmConstants.armVD);
+    private double setpoint = 86;
 
     public Arm(){
         m_leftMotor = new CANSparkMax(ArmConstants.arm_leftMotorID, MotorType.kBrushless);
@@ -66,7 +67,7 @@ public class Arm extends SubsystemBase{
     public void config(){
         m_leftMotor.setSmartCurrentLimit(ArmConstants.kArmCurrentLimit);
         m_leftMotor.setIdleMode(IdleMode.kBrake);
-        m_leftMotor.setInverted(true);
+        m_leftMotor.setInverted(true); 
 
         m_rightMotor.setSmartCurrentLimit(ArmConstants.kArmCurrentLimit);
         m_rightMotor.setIdleMode(IdleMode.kBrake);
@@ -97,7 +98,11 @@ public class Arm extends SubsystemBase{
         return getEncoderAbsPos(rightEncoder)*360;
     }
 
-    public void setArmToPos(double setpoint){
+    public void setSetpoint(double setPointAngle){
+        setpoint = setPointAngle;
+    }
+    
+    public void setArmToPos(){
         if (getEncoderAngle() < setpoint){
             armPosPID.setP(ArmConstants.armPosPHigh);
             armPosPID.setD(ArmConstants.armPosD);

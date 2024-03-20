@@ -20,7 +20,8 @@ public class SetArmHome extends Command{
     @Override
     public void execute(){
         //arm.setArmToPos(84);
-        arm.setArmToPos(86);
+        arm.setSetpoint(86);
+        arm.setArmToPos();
     }
 
     @Override

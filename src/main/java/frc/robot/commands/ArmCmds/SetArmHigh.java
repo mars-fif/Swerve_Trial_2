@@ -19,7 +19,8 @@ public class SetArmHigh extends Command{
 
     @Override
     public void execute(){
-        arm.setArmToPos(140);
+        arm.setSetpoint(140);
+        arm.setArmToPos();
     }
 
     @Override

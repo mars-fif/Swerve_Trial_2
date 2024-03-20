@@ -20,13 +20,13 @@ public class A_SetArmHome extends Command{
 
     @Override
     public void execute(){
-        arm.setArmToPos(86);
+        arm.setSetpoint(86);
+        arm.setArmToPos();
     }
 
     @Override
     public void end(boolean interrupted){
-        
-        
+        arm.setSpeed(0);
     }
 
     @Override
@@ -34,6 +34,6 @@ public class A_SetArmHome extends Command{
         if (arm.withinRange(arm.getEncoderAngle(), 86)){
             return true;
         }
-        return false;   
+        return false;    
     }
 }

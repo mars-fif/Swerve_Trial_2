@@ -2,22 +2,26 @@ package frc.robot.commands.AutoCmds;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import frc.robot.subsystems.Intake;
 
-public class A_RunIntakeIn extends Command{
-    private Intake intake;
-    //private static Timer timer;
-    //private static double time; 
+import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 
-    public A_RunIntakeIn(){
+public class A_RunIntakeShot extends Command{
+    private Intake intake;
+    private static Timer timer;
+    private static double startTime; 
+
+    //private static ParallelDeadlineGroup deadlineGroup;
+
+    public A_RunIntakeShot(){
         intake = Intake.getInstance();
         //addRequirements(intake);
     }
 
     @Override 
     public void initialize(){
-
+        startTime = Timer.getFPGATimestamp();
+        //deadlineGroup.setDeadline(this);
     }
 
     @Override
@@ -32,10 +36,9 @@ public class A_RunIntakeIn extends Command{
 
     @Override
     public boolean isFinished(){
-        if (intake.noteReady()){
+        if (Timer.getFPGATimestamp() - startTime > 1.5){
             return true; 
-        }else{
-            return false;
         }
+        return false;
     }
 }

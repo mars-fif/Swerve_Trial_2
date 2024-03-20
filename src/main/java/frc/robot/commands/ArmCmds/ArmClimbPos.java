@@ -19,7 +19,8 @@ public class ArmClimbPos extends Command{
 
     @Override
     public void execute(){
-        arm.setArmToPos(95);
+        arm.setSetpoint(95);
+        arm.setArmToPos();
     }
 
     @Override

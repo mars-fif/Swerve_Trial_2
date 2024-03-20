@@ -13,7 +13,7 @@ import frc.robot.commands.StopTest;
 import frc.robot.commands.StraightenDrivetrain;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Intake;
-import frc.robot.subsystems.SmolArm;
+//import frc.robot.subsystems.SmolArm;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 
 public class DriverOI {
@@ -22,7 +22,7 @@ public class DriverOI {
     private final Drivetrain drivetrain;
     private final Intake intake; 
 
-    private final SmolArm smolArm;
+    //private final SmolArm smolArm;
 
     private double m_currentRotation = 0.0;
     private double m_currentTranslationDir = 0.0;
@@ -49,7 +49,7 @@ public class DriverOI {
     public DriverOI(){
         drivetrain = Drivetrain.getInstance();
         intake = Intake.getInstance();
-        smolArm = SmolArm.getInstance();
+        //smolArm = SmolArm.getInstance();
 
         driveSpeedMode = DriveSpeedMode.NORMAL;
 
@@ -72,14 +72,16 @@ public class DriverOI {
 
         //Small arm:
         //Brings the small arm up
-        Trigger yTrigger = new JoystickButton(controller, XboxController.Button.kY.value);
-        yTrigger.onTrue(new InstantCommand(()->smolArm.setSpeed(-0.5)))
+        /* 
+        Trigger leftTrig = new JoystickButton(controller, XboxController.Button.kLeftBumper.value);
+        leftTrig.onTrue(new InstantCommand(()->smolArm.setSpeed(-0.5)))
         .onFalse(new InstantCommand(()->smolArm.stop()));
 
         //Brings the small arm down
-        Trigger bTrigger = new JoystickButton(controller, XboxController.Button.kB.value);
-        bTrigger.onTrue(new InstantCommand(()->smolArm.setSpeed(0.5)))
+        Trigger rightTrig = new JoystickButton(controller, XboxController.Button.kRightBumper.value);
+        rightTrig.onTrue(new InstantCommand(()->smolArm.setSpeed(0.5)))
         .onFalse(new InstantCommand(()->smolArm.stop()));
+        */
 
 
         //Intake: b is intake, a is out 

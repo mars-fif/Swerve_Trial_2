@@ -4,9 +4,13 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Shooter;
 
+import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
+
 public class A_Shoot extends Command{
     private Shooter shooter;
-    private double time;
+    private Timer timer; 
+    private static double startTime; 
+    //private static ParallelDeadlineGroup deadlineGroup; 
 
     public A_Shoot(){
         shooter = Shooter.getInstance();
@@ -16,12 +20,12 @@ public class A_Shoot extends Command{
 
     @Override 
     public void initialize(){
-        time = Timer.getFPGATimestamp();
+        startTime = timer.getFPGATimestamp();
     }
 
     @Override
     public void execute(){
-        shooter.setSpeed(-1);
+        shooter.setSpeed(-.7);
     }
 
     @Override
@@ -31,7 +35,7 @@ public class A_Shoot extends Command{
 
     @Override
     public boolean isFinished(){
-        if (Timer.getFPGATimestamp() - time >= 2){
+        if (timer.getFPGATimestamp() - startTime > 4){
             return true;
         }
         return false;

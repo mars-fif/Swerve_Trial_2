@@ -19,7 +19,8 @@ public class SetArmTrap extends Command{
 
     @Override
     public void execute(){
-        arm.setArmToPos(94);
+        arm.setSetpoint(94);
+        arm.setArmToPos();
     }
 
     @Override

@@ -19,7 +19,8 @@ public class SetArmMid extends Command{
 
     @Override
     public void execute(){
-        arm.setArmToPos(108);
+        arm.setSetpoint(115);
+        arm.setArmToPos();
     }
 
     @Override

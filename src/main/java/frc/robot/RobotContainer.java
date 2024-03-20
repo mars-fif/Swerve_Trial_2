@@ -8,6 +8,7 @@ import frc.robot.Constants;
 import frc.robot.commands.SwerveDriveCommand;
 import frc.robot.commands.ArmCmds.SetArmHome;
 import frc.robot.commands.AutoCmds.A_RunIntakeIn;
+import frc.robot.commands.AutoCmds.A_RunIntakeShot;
 import frc.robot.commands.AutoCmds.A_SetArmHome;
 import frc.robot.commands.AutoCmds.A_SetArmSpeaker;
 import frc.robot.commands.AutoCmds.A_Shoot;
@@ -44,13 +45,15 @@ import java.util.List;
 import edu.wpi.first.util.sendable.Sendable;
 
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import edu.wpi.first.math.controller.ProfiledPIDController;
-
+import frc.robot.commands.AutoCmds.A_RunIntakeIn;
+import frc.robot.commands.AutoCmds.A_Shoot;
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
  * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
@@ -76,13 +79,13 @@ public class RobotContainer {
 
     arm = Arm.getInstance();
     arm.setDefaultCommand(new SetArmHome());
-    // arm.register();
+    //arm.register();
 
     intake = Intake.getInstance();
-    intake.register();
+    //intake.register();
 
     shooter = Shooter.getInstance();
-    shooter.register();
+    //shooter.register();
 
 
     //Xbox controllers: Driver(0), Operator(1)
@@ -90,100 +93,22 @@ public class RobotContainer {
     operatorOI = OperatorOI.getInstance();
 
     //auto = Auto.getInstance();
+    //Setting named commands
+    NamedCommands.registerCommand("Intake Shwat", new A_RunIntakeShot());
+    NamedCommands.registerCommand("Set Arm Home", new A_SetArmHome());
+    NamedCommands.registerCommand("Intake In", new A_RunIntakeIn());
+    NamedCommands.registerCommand("Shooter", new A_Shoot());
+    NamedCommands.registerCommand("Set Arm Speaker", new A_SetArmSpeaker());
+    
 
     autoChooser = AutoBuilder.buildAutoChooser(); // Default auto will be `Commands.none()`
     SmartDashboard.putData("Auto Chooser", autoChooser);
-
-    //configureAutoRoutines();
   }
 
-  //private void configureAutoRoutines(){
-    //autoChooser.addOption("Test Auto", new PathPlannerAuto("TestAuto"));
-  //}
-
   public Command getAutonomousCommand(){
-    return autoChooser.getSelected();
-    /* 
-    System.out.println("AutoConfig Starting");
-    System.out.println("AutoConfig Starting");
-    System.out.println("AutoConfig Starting");
-    System.out.println("AutoConfig Starting");
-
-    SmartDashboard.putString("Auto Status", "womp2");
-    
-    TrajectoryConfig trajectoryConfig = new TrajectoryConfig(
-      AutoConstants.kMaxSpeedMetersPerSec, 
-      AutoConstants.kMaxAcceleration).setKinematics(DriveConstants.kinematics);
-
-    //Just goes straight
-    Trajectory trajectory = TrajectoryGenerator.generateTrajectory(
-      new Pose2d(0, 0, new Rotation2d(0)),
-      List.of(
-        new Translation2d(1, 0)
-      ),
-      new Pose2d(2, 0, Rotation2d.fromDegrees(90)),
-      trajectoryConfig
-    ); 
-
-    PIDController xController = new PIDController(AutoConstants.xControllerP, 0, 0);
-    PIDController yController = new PIDController(AutoConstants.yControllerP, 0, 0);
-    ProfiledPIDController thetaController = new ProfiledPIDController(AutoConstants.thetaControllerP, 0, 0, AutoConstants.thetaControllerConstraints);
-    thetaController.enableContinuousInput(-Math.PI, Math.PI);
-
-    SwerveControllerCommand swerveControllerCommand = new SwerveControllerCommand(
-      trajectory,
-      drivetrain::getPose,
-      DriveConstants.kinematics,
-      xController,
-      yController,
-      thetaController,
-      drivetrain::setSwerveModuleStates,
-      drivetrain);
-      SmartDashboard.putString("Auto Status", "womp3");
-      SmartDashboard.putNumber("Current Pose", drivetrain.getPose().getX());
-
-    
-    //For just driving out, straight
-    
-    return new SequentialCommandGroup(
-      new InstantCommand(() -> drivetrain.resetPose(trajectory.getInitialPose())),
-      swerveControllerCommand,
-      new InstantCommand(() -> drivetrain.stopSwerveModules())
-    );
-
-    */
-    
-
-    //Nothing at all 
-    /* 
     drivetrain.resetGyro();
-    return null;
-    */
-
-    //Shooting into speaker
-    
-    //Testing this
-    /* 
-    return new SequentialCommandGroup(
-      new A_SetArmHome(),
-      new A_SetArmSpeaker(),
-      new A_Shoot(), 
-      new InstantCommand(() -> drivetrain.resetPose(trajectory.getInitialPose())),
-      swerveControllerCommand,
-      new InstantCommand(() -> drivetrain.stopSwerveModules())
-    );
-    */
-    
-    /* 
-    return new SequentialCommandGroup(
-      //Get the robot arm back to its home position 
-      //Get robot going to the X position for speaker 
-      //Run the shooter for a good 3 seconds to let it ramp up 
-      //Run the intake for 2 seconds or so 
-      new A_SetArmSpeaker()
-    );
-
-    */
+    return autoChooser.getSelected();
+    //return null;
   }
 
   
